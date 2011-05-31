@@ -1,0 +1,7 @@
+Current goal:
+
+1. Given a game of Donkeyslug
+2. And a map/level
+3. When we move the player using the arrow keys
+4. Then the player should move to the desired location
+ 
