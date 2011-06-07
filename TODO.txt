@@ -1,0 +1,18 @@
+* Display player
+* Move player around
+* Constuct level
+* Restrict player movement
+
+=== ALPHA RELEASE v0.01a ===
+
+* Fight with monster
+* Place monsters in level
+
+
+
+
+1. load saved state
+  - map out level (walls, floors, etc.)
+  - place player
+2. walk until hits wall
+
