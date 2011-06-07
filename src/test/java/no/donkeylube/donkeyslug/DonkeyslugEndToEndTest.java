@@ -2,25 +2,28 @@ package no.donkeylube.donkeyslug;
 
 import static org.junit.Assert.assertEquals;
 
-import java.awt.AWTException;
-import java.awt.Robot;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class DonkeyslugEndToEndTest {
     private Player player;
-    private Game game;
-
+    
+    @Before
+    public void createPlayer() {
+	player = new Player("Player", new CreatureStatistics.Builder(50, 50).build());	
+    }
+    
     @Test
     public void loadMapAndWalkAround() {
-	game = new Game();
-	loadMapFromFile();
-	player = new Player();
-	game.insertPlaceableAt(player, 20, 2);
-	movePlayerToBottomRightCorner();
+	LevelMap levelMap = loadMapFromFile();
+	levelMap.addPlaceableAt(player, new Coordinates(20, 2));
+	player.setMoveListener(new MoveListener(levelMap));
+	movePlayerToBottomRightCornerWhileHittingWalls();
 	String expectedOverview =
 		"#######################\n"
 			+ "#                     #\n"
@@ -29,28 +32,25 @@ public class DonkeyslugEndToEndTest {
 			+ "#     #################\n"
 			+ "#                     #\n"
 			+ "#                    P#\n"
-			+ "#######################";
-	assertEquals(expectedOverview, game.overview());
+			+ "#######################\n";		
+	LevelMapTextRenderer renderer = new LevelMapTextRenderer(levelMap);
+	assertEquals(expectedOverview, renderer.render());
     }
 
-    private void loadMapFromFile() {
+    private LevelMap loadMapFromFile() {
+	LevelMap levelMap = null;
 	try {
-	    game.loadMap(new FileInputStream(new File("src/test/resources/testlevel.map")));
+	    InputStream mapInputStream = new FileInputStream(new File("src/test/resources/testlevel.map")); 
+	    levelMap = LevelMapFactory.loadMap(mapInputStream);
 	}
 	catch (IOException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
+	return levelMap;
     }
 
-    private void movePlayerToBottomRightCorner() {
-	try {
-	    Robot robot = new Robot();
-	}
-	catch (AWTException e) {
-	    e.printStackTrace();
-	}
-	movePlayer(Direction.WEST, 100); // Hitting walls as we go
+    private void movePlayerToBottomRightCornerWhileHittingWalls() {
+	movePlayer(Direction.WEST, 100);
 	movePlayer(Direction.SOUTH, 100);
 	movePlayer(Direction.EAST, 100);
     }

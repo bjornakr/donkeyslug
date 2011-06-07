@@ -1,10 +1,12 @@
 package no.donkeylube.donkeyslug;
 
-public class Player {
+public class Player extends AttackableFighterCreature implements Movable {
 
-    public void move(Direction direction) {
-	// TODO Auto-generated method stub
-	
+    public Player(String name, CreatureStatistics playerStats) {
+	super(name, playerStats);
     }
+
+
+    
 
 }

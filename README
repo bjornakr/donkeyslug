@@ -1,7 +1,32 @@
-Current goal:
+=== CURRENT GOALS(S) ===
 
+FEATURE: Fighting
+1. Given a Player
+2. And an enemy
+3. When the player is fighting with the enemy
+4. Then one of them should eventually turn up dead  
+
+
+
+=== COMPLETED ===
+
+=FEATURE: Movement in level=
 1. Given a game of Donkeyslug
 2. And a map/level
 3. When we move the player using the arrow keys
 4. Then the player should move to the desired location
- 
+
+
+
+skills:
+- STR
+- ACC 
+- DEX
+
+Melee attack:
+  Chance to hit: 
+    CTH = DEX - ENEMY_DEX / 100
+  Damage dealt:
+    DMG = WEAPON_DAMAGE + STR - ENEMY_ARMOR
+    ...with chance of critical
+    ...and "poor shot"
