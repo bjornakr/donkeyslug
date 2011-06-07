@@ -1,6 +1,6 @@
 DONKEYSLUG
 ==========
-Donkeylube Software Studios
+*Donkeylube Software Studios*
 
 Donkeyslug should be some kind of a rougelike game, a dungeon creeper. The player should die easily, and death is permanent,
 but I would like some kind of "leftovers" from previous characters, making the game easier over time. The world
@@ -12,39 +12,32 @@ What I am really trying to do is to get into Test Driven Development, and apply 
 procured from the various literature I've been reading. :)
 
 
-CURRENT GOALS(S)
-----------------
+CURRENT GOAL(S)
+---------------
 * Items
 * Make Creatures
-  -carry items
-  -wear armor
+  - carry items
+  - wear armor
 * Automatic map generation
+
 
 FUTURE
 ------
 * System for importing Items and Creatures, taking it out of the code.
   - Maybe JSON is suited for this?
 * Monster AI
-  -movement (run away, search for player, patrol, sleep, ...)
-  -aggro
-  -call swarm
-  -attack enemy monsters
-* Levelling
-* Some kind of view that makes the game playable 
+  - movement (run away, search for player, patrol, sleep, ...)
+  - aggro
+  - call swarm
+  - attack enemy monsters
+* Leveling
+* Some kind of view that makes the game playable
+* Ranged combat
 
 
 
 COMPLETED
 ---------
-
-=FEATURE: Movement in level=
-1. Given a game of Donkeyslug
-2. And a map/level
-3. When we move the player using the arrow keys
-4. Then the player should move to the desired location
-
-FEATURE: Fighting
-1. Given a Player
-2. And an enemy
-3. When the player is fighting with the enemy
-4. Then one of them should eventually turn up dead  
+Currently the game supports (extremely simple) parsing of acii-maps, where you can place things like Items, Players and
+Creatures. Creatures can move around (not by themselves, though), and they can fight each other with a preliminary
+battle algorithm.
