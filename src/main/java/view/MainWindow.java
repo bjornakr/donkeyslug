@@ -21,11 +21,11 @@ public class MainWindow extends JFrame {
 		JScrollPane scrollPane = new JScrollPane(mapScreen);
 		setLayout(new BorderLayout());
 		add(scrollPane, BorderLayout.CENTER);
-		add(new JLabel("Test"), BorderLayout.PAGE_START);
-		add(new JLabel("Test"), BorderLayout.PAGE_END);
-		setLocationRelativeTo(null);
+		add(new JLabel("Test!!!!!!!!!!!!!!!"), BorderLayout.PAGE_START);
+		add(new JLabel("Test2"), BorderLayout.PAGE_END);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		pack();
+		setLocationRelativeTo(null);
 	}
 	
 	public void setMap(String map) {

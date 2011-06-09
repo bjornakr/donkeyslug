@@ -4,14 +4,14 @@ import java.util.Random;
 
 public class LevelMapGenerator {
 
-    private Tile[][] tiles;
+	private Tile[][] tiles;
 
-    public LevelMap generate(int height, int width) {
+	public LevelMap generate(int height, int width) {
 	tiles = new Tile[height][width];
 	fillRectangle(Tile.Type.WALL, new Coordinates(0, 0), new Coordinates(width, height));
 
 	int noOfRooms = 0;
-	while (noOfRooms < 8) {
+	while (noOfRooms < 11) {
 	    Coordinates roomStartCoordinates = findRandomWallCoordinates();
 	    int roomHeight = height / 5;
 	    int roomWidth = width / 5;
@@ -22,42 +22,53 @@ public class LevelMapGenerator {
 		noOfRooms++;
 	    }
 	}
-
+	LevelMap levelMap = new LevelMap(tiles);
+	
+	while (!levelMap.allFloorTilesAreAccessible()) {
+		Tile tile = levelMap.findRandomFloorTile();
+		
+		
+		for (Coordinates coordinates : levelMap.getAdjacentCoordinates(levelMap.getCoordinatesFor(tile))) {
+			if (levelMap.getTile(coordinates).isWall()) {
+				tiles[coordinates.getY()][coordinates.getX()] = new Tile(Tile.Type.FLOOR);
+			}
+		}
+		levelMap = new LevelMap(tiles);
+	}
+	
 	return new LevelMap(tiles);
     }
 
-    private boolean collission(Coordinates roomStartCoordinates, Coordinates roomEndCoordinates) {
-	if (roomEndCoordinates.getX() >= tiles[0].length - 1
-		|| roomEndCoordinates.getY() >= tiles.length - 1) {
-	    return true;
-	}
-	for (int y = roomStartCoordinates.getY(); y < roomEndCoordinates.getY(); y++) {
-	    for (int x = roomStartCoordinates.getX(); x < roomEndCoordinates.getX(); x++) {
-		if (!tiles[y][x].isWall()) {
-		    return true;
+	private boolean collission(Coordinates roomStartCoordinates, Coordinates roomEndCoordinates) {
+		if (roomEndCoordinates.getX() >= tiles[0].length - 1 || roomEndCoordinates.getY() >= tiles.length - 1) {
+			return true;
 		}
-	    }
+		for (int y = roomStartCoordinates.getY(); y < roomEndCoordinates.getY(); y++) {
+			for (int x = roomStartCoordinates.getX(); x < roomEndCoordinates.getX(); x++) {
+				if (!tiles[y][x].isWall()) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
-	return false;
-    }
 
-    private Coordinates findRandomWallCoordinates() {
-	Random random = new Random();
-	int x;
-	int y;
-	do {
-	    x = random.nextInt(tiles[0].length - 1) + 1;
-	    y = random.nextInt(tiles.length - 1) + 1;
+	private Coordinates findRandomWallCoordinates() {
+		Random random = new Random();
+		int x;
+		int y;
+		do {
+			x = random.nextInt(tiles[0].length - 1) + 1;
+			y = random.nextInt(tiles.length - 1) + 1;
+		} while (!tiles[y][x].isWall());
+		return new Coordinates(x, y);
 	}
-	while (!tiles[y][x].isWall());
-	return new Coordinates(x, y);
-    }
 
-    private void fillRectangle(Tile.Type type, Coordinates startCoordinates, Coordinates endCoordinates) {
-	for (int y = startCoordinates.getY(); y < endCoordinates.getY(); y++) {
-	    for (int x = startCoordinates.getX(); x < endCoordinates.getX(); x++) {
-		tiles[y][x] = new Tile(type);
-	    }
+	private void fillRectangle(Tile.Type type, Coordinates startCoordinates, Coordinates endCoordinates) {
+		for (int y = startCoordinates.getY(); y < endCoordinates.getY(); y++) {
+			for (int x = startCoordinates.getX(); x < endCoordinates.getX(); x++) {
+				tiles[y][x] = new Tile(type);
+			}
+		}
 	}
-    }
 }
