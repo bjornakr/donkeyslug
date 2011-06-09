@@ -75,6 +75,24 @@ Individual creatures of same type should vary in:
 
 
 
+Dunjeon jeneration
+
+Make base roomsize a % of total grid size. Roomsize should vary within a normal distribution w/ high variance.
+
+1. Fill grid with walls
+2. Make a random # of rooms
+3. Make 
+
+
+
+norm dist w/ high var
+
+
+zapp(initial)
+if (rand < 0.25 && zapp < 0) return zapp(initial-1);
+else if (rand >= 0.75 && zapp > 0) return zapp(initial+1);
+else return initial;
+
 
 
 

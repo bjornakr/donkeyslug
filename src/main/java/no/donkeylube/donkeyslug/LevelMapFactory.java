@@ -71,24 +71,67 @@ public class LevelMapFactory {
 
     private static String constructSimpleMap(int noOfRows, int noOfCols) {
 	String levelMap = "";
-	for (int i = 0; i < noOfRows; i++) {
-	    for (int j = 0; j < noOfCols; j++) {
-		levelMap += shouldBeWall(noOfRows, noOfCols, i, j) ? "#" : " ";
+	for (int y = 0; y < noOfRows; y++) {
+	    for (int x = 0; x < noOfCols; x++) {
+		levelMap += isEdge(noOfRows, noOfCols, new Coordinates(x, y)) ? "#" : " ";
 	    }
 	    levelMap += "\n";
 	}
 	return levelMap;
     }
 
-    private static boolean shouldBeWall(int noOfRows, int noOfCols, int i, int j) {
-	if (i == 0 || j == 0) {
+    private static boolean isEdge(int height, int width, Coordinates coordinates) {
+	if (coordinates.getX() == 0 || coordinates.getY() == 0) {
 	    return true;
 	}
-	else if (i == noOfRows-1 || j == noOfCols-1) {
+	else if (coordinates.getY() == height-1 || coordinates.getX() == width-1) {
 	    return true;
 	}
 	else {
 	    return false;
 	}
+    }
+
+    public static LevelMap generateLevelMap(int width, int height) {
+	Tile[][] tiles = new Tile[height][width];	
+	for (int y = 0; y < tiles.length; y++) {
+	    for (int x = 0; x < tiles[y].length; x++) {
+		if (isEdge(height, width, new Coordinates(x, y))) {
+		    tiles[y][x] = new Tile(Tile.Type.WALL);
+		}
+		else {
+		    tiles[y][x] = createRandomTile(tiles, new Coordinates(x, y));
+		}
+	    }
+	}	
+	return new LevelMap(tiles);
+    }
+
+    private static Tile createRandomTile(Tile[][] tiles, Coordinates coordinates) {
+	double chanceOfWall = calculateChanceOfWall(tiles, coordinates); 
+	Tile randomTile;
+	if (Math.random() < chanceOfWall && hasAdjacentWall(tiles, coordinates)) {
+	    randomTile = new Tile(Tile.Type.WALL);
+	}
+	else {
+	    randomTile = new Tile(Tile.Type.FLOOR);
+	}
+	return randomTile;
+    }
+
+    private static boolean hasAdjacentWall(Tile[][] tiles, Coordinates coordinates) {
+	if (tiles[coordinates.getY()-1][coordinates.getX()].isWall()) {
+	    return true;
+	}
+	if (tiles[coordinates.getY()][coordinates.getX()-1].isWall()) {
+	    return true;
+	}
+	else {
+	    return false;
+	}
+    }
+
+    private static double calculateChanceOfWall(Tile[][] tiles, Coordinates coordinates) {
+	return 0.60;
     }
 }
