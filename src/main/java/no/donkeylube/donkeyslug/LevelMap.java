@@ -11,10 +11,7 @@ public class LevelMap {
     }
 
     public void addPlaceableAt(Placeable placeable, Coordinates coordinates) {
-	if (tiles[coordinates.getY()][coordinates.getX()].isWall()) {
-	    throw new IllegalArgumentException("Cannot place something on a wall tile.");
-	}
-	tiles[coordinates.getY()][coordinates.getX()].insert(placeable);
+	tiles[coordinates.getY()][coordinates.getX()].add(placeable);
     }
 
     public boolean hasPlaceableAt(Placeable placeable, Coordinates coordinates) {

@@ -15,7 +15,13 @@ public class Tile {
 	return type == Type.WALL;
     }
 
-    public void insert(Placeable placeable) {
+    public void add(Placeable placeable) {
+	if (content.contains(placeable)) {
+	    throw new IllegalArgumentException("Tile already contains placeable.");
+	}
+	else if (isWall()) {
+	    throw new IllegalArgumentException("Cannot place content on a wall tile.");
+	}
 	content.add(placeable);
     }
 

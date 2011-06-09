@@ -1,0 +1,88 @@
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+ WELCoME To THE AMAZiNG
+ 
+    _      _                           _     _                          
+   |  |  /     ,    /        /        /|   /                           
+ --|-/|-/----------/-----__-/--------/-| -/------__---_/_-----__----__-
+   |/ |/     /    /    /   /        /  | /     /   )  /     /___)  (_ `
+ __/__|_____/____/____(___/________/___|/_____(___/__(_ ___(___ __(__)_
+
+       *herp*
+                  *derp*
+                  
+       WHERE WE WiLL HAVE A LoT oF FuN!!!
+      
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+i'm such a regular guy
+doin' regular stuff
+i got a lighter in my pocket
+& i think i've said enough
+
+i am theresa
+that's why they call me
+theresa
+
+
+i am a man of fortune
+& u better believe
+i've got a pistol at the ready
+& an ace up my sleeve
+
+i am theresa
+that's why they call me
+theresa
+ 
+ 
+ 
+ 
+How 'bout some YAML?
+YAMLYAMLYAML!
+
+
+weapon: 
+
+
+
+creature: zergling
+  weapon: *WHERE Do i GET THESE???*
+
+
+
+
+
+
+
+
+
+
+
+
+Individual creatures of same type should vary in:
+- Level
+- Strength (normal curve)
+- Dexterity
+- Items carried
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

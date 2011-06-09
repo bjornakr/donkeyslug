@@ -23,7 +23,7 @@ public class MoveListener {
 	    }
 	    else {
 		tileToMoveFrom.remove(movable);
-		tileToMoveTo.insert(movable);
+		tileToMoveTo.add(movable);
 		movables.put(movable, newCoordinatesForMovable);
 	    }
 	}
