@@ -9,8 +9,8 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
 
-import view.LevelMapPainter;
 
+import no.donkeylube.donkeyslug.view.LevelMapPainter;
 import no.donkeylube.donkeyslug.view.MainWindow;
 
 public class App implements KeyListener {
@@ -22,15 +22,11 @@ public class App implements KeyListener {
 	Direction currentDirection;
 
 	public App() {
-		// mainWindow.addKeyListener(this);
-
 		LevelMap levelMap = new LevelMapGenerator().generate(40, 40);
-		levelMap.findRandomFloorTile().add(player);
-
+		levelMap.addPlaceableToRandomTile(player);
 		AttackableFighterCreature zergling = new AttackableFighterCreature("Zergling", new CreatureStatistics.Builder(5, 5).build());
-		levelMap.findRandomFloorTile().add(zergling);
+		levelMap.addPlaceableToRandomTile(zergling);
 		player.setMoveListener(new MoveListener(levelMap));
-		// mainWindow.setMap(levelMap.getTiles());
 		mapPainter = new LevelMapPainter(levelMap.getTiles());
 		mainWindow = new MainWindow(mapPainter);
 		mainWindow.addKeyListener(this);

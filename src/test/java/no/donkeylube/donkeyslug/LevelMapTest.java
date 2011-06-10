@@ -101,7 +101,7 @@ public class LevelMapTest {
     
     @Test
     public void testFindRandomFloorTile() {
-	Tile tile = levelMap.findRandomFloorTile();
+	Tile tile = levelMap.findRandomFloorTileWithCoordinates().get();
 	assertTrue(tile.isFloor());
     }
 }

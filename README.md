@@ -14,7 +14,8 @@ procured from the various literature I've been reading. :)
 
 CURRENT GOAL(S)
 ---------------
-* Items
+* Simple view that makes the game playable
+* Items (should be placed on the map, picked up, and used in various ways)
 * Make Creatures
   - carry items
   - wear armor
@@ -24,14 +25,13 @@ CURRENT GOAL(S)
 FUTURE
 ------
 * System for importing Items and Creatures, taking it out of the code.
-  - Maybe JSON is suited for this?
+  - Maybe <del>JSON</del> YAML is suited for this?
 * Monster AI
   - movement (run away, search for player, patrol, sleep, ...)
   - aggro
   - call swarm
   - attack enemy monsters
-* Leveling
-* Some kind of view that makes the game playable
+* Leveling and scaling
 * Ranged combat
 
 
