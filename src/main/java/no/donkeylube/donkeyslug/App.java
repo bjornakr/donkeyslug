@@ -9,88 +9,95 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
 
-
 import no.donkeylube.donkeyslug.view.LevelMapPainter;
 import no.donkeylube.donkeyslug.view.MainWindow;
 
 public class App implements KeyListener {
-	Player player = new Player("Doodlestick", new CreatureStatistics.Builder(10, 10).build());
-	Stack<Direction> directionsPressed = new Stack<Direction>();
-	// LevelMapTextRenderer renderer;
-	LevelMapPainter mapPainter;
-	MainWindow mainWindow;
-	Direction currentDirection;
+    Player player = new Player("Doodlestick", new CreatureStatistics.Builder(10, 10).build());
+    Stack<Direction> directionsPressed = new Stack<Direction>();
+    // LevelMapTextRenderer renderer;
+    LevelMapPainter mapPainter;
+    MainWindow mainWindow;
+    Direction currentDirection;
 
-	public App() {
-		LevelMap levelMap = new LevelMapGenerator().generate(40, 40);
-		levelMap.addPlaceableToRandomTile(player);
-		AttackableFighterCreature zergling = new AttackableFighterCreature("Zergling", new CreatureStatistics.Builder(5, 5).build());
-		levelMap.addPlaceableToRandomTile(zergling);
-		player.setMoveListener(new MoveListener(levelMap));
-		mapPainter = new LevelMapPainter(levelMap.getTiles());
-		mainWindow = new MainWindow(mapPainter);
-		mainWindow.addKeyListener(this);
-		mainWindow.setVisible(true);
+    public App() {
+	LevelMap levelMap = new LevelMapGenerator().generate(40, 80);
+	levelMap.addPlaceableToRandomTile(player);
+	AttackableFighterCreature zergling = new AttackableFighterCreature("Zergling", new CreatureStatistics.Builder(
+		5, 5).build());
+	levelMap.addPlaceableToRandomTile(zergling);
+	player.setMoveListener(new MoveListener(levelMap));
+	mapPainter = new LevelMapPainter(levelMap.getTiles());
+	mainWindow = new MainWindow(mapPainter);
+	mainWindow.addKeyListener(this);
+	mainWindow.setVisible(true);
 
-		int sleepInterval = 20;
-		while (true) {
-			if (mapPainter.finishedMovingMovables() && !directionsPressed.isEmpty()) {
-				player.move(directionsPressed.peek());
-			}
-				
-			mapPainter.repaint();
-			try {
-				Thread.sleep(sleepInterval);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+	int sleepInterval = 20;
+	while (true) {
+	    if (mapPainter.finishedMovingMovables() && !directionsPressed.isEmpty()) {
+		player.move(directionsPressed.peek());
+	    }
+
+	    mapPainter.repaint();
+	    try {
+		Thread.sleep(sleepInterval);
+	    }
+	    catch (InterruptedException e) {
+		e.printStackTrace();
+	    }
+	}
+    }
+
+    public static void main(String[] args) {
+	new App();
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+	int keyCode = e.getKeyCode();
+	Direction direction = null;
+	if (keyCode == KeyEvent.VK_LEFT) {
+	    direction = Direction.WEST;
+	}
+	else if (keyCode == KeyEvent.VK_UP) {
+	    direction = Direction.NORTH;
+	}
+	else if (keyCode == KeyEvent.VK_RIGHT) {
+	    direction = Direction.EAST;
+	}
+	else if (keyCode == KeyEvent.VK_DOWN) {
+	    direction = Direction.SOUTH;
+	}
+	if (direction != null && !directionsPressed.contains(direction)) {
+	    directionsPressed.push(direction);
+	}
+	System.out.println(keyCode);
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+	int keyCode = e.getKeyCode();
+	Direction direction = null;
+	if (keyCode == KeyEvent.VK_LEFT) {
+	    direction = Direction.WEST;
+	}
+	else if (keyCode == KeyEvent.VK_UP) {
+	    direction = Direction.NORTH;
+	}
+	else if (keyCode == KeyEvent.VK_RIGHT) {
+	    direction = Direction.EAST;
+	}
+	else if (keyCode == KeyEvent.VK_DOWN) {
+	    direction = Direction.SOUTH;
+	}
+	if (direction != null) {
+	    directionsPressed.remove(direction);
 	}
 
-	public static void main(String[] args) {
-		new App();
-	}
+	System.err.println(keyCode);
+    }
 
-	@Override
-	public void keyPressed(KeyEvent e) {
-		int keyCode = e.getKeyCode();
-		Direction direction = null;
-		if (keyCode == KeyEvent.VK_LEFT) {
-			direction = Direction.WEST;
-		} else if (keyCode == KeyEvent.VK_UP) {
-			direction = Direction.NORTH;
-		} else if (keyCode == KeyEvent.VK_RIGHT) {
-			direction = Direction.EAST;
-		} else if (keyCode == KeyEvent.VK_DOWN) {
-			direction = Direction.SOUTH;
-		}
-		if (direction != null && !directionsPressed.contains(direction)) {
-			directionsPressed.push(direction);
-		}
-		System.out.println(keyCode);
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		int keyCode = e.getKeyCode();
-		Direction direction = null;
-		if (keyCode == KeyEvent.VK_LEFT) {
-			direction = Direction.WEST;
-		} else if (keyCode == KeyEvent.VK_UP) {
-			direction = Direction.NORTH;
-		} else if (keyCode == KeyEvent.VK_RIGHT) {
-			direction = Direction.EAST;
-		} else if (keyCode == KeyEvent.VK_DOWN) {
-			direction = Direction.SOUTH;
-		}
-		if (direction != null) {
-			directionsPressed.remove(direction);
-		}
-
-		System.err.println(keyCode);
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-	}
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
 }

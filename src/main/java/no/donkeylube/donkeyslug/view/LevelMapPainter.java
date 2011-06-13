@@ -36,10 +36,10 @@ public class LevelMapPainter extends JPanel {
 	for (Tile[] tileRow : tiles) {
 	    for (Tile tile : tileRow) {
 		if (tile.isWall()) {
-		    g2.setColor(Color.DARK_GRAY);
+		    g2.setColor(new Color(0x30291D));
 		}
 		else if (tile.isFloor()) {
-		    g2.setColor(Color.GRAY);
+		    g2.setColor(new Color(0xA18C6C));
 		}
 		g2.fillRect(brushPosX, brushPosY, BLOCKSIZE, BLOCKSIZE);
 
