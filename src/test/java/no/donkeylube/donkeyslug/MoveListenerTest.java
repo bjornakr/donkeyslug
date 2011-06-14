@@ -20,7 +20,7 @@ public class MoveListenerTest {
 	levelMap = LevelMapFactory.createSimpleMap(3, 3);
 	Coordinates initialCoordinates = new Coordinates(1, 1);
 	levelMap.addPlaceableAt(player, initialCoordinates);
-	player.setMoveListener(new MoveListener(levelMap));
+	player.createMovableMover(levelMap);
 	player.move(Direction.NORTH);
 	assertEquals(initialCoordinates, levelMap.getCoordinatesFor(player));
 	player.move(Direction.EAST);
@@ -64,7 +64,7 @@ public class MoveListenerTest {
 	levelMap = LevelMapFactory.createSimpleMap(5, 5);	
 	Coordinates initialCoordinates = new Coordinates(2, 1);
 	levelMap.addPlaceableAt(player, initialCoordinates);
-	player.setMoveListener(new MoveListener(levelMap));
+	player.createMovableMover(levelMap);
 	player.move(Direction.SOUTH);
 	player.move(Direction.SOUTH);
 	assertEquals(new Coordinates(2, 3), levelMap.getCoordinatesFor(player));
@@ -74,6 +74,6 @@ public class MoveListenerTest {
 	levelMap = LevelMapFactory.createSimpleMap(5, 5);
 	Coordinates initialCoordinates = new Coordinates(2, 2);
 	levelMap.addPlaceableAt(player, initialCoordinates);
-	player.setMoveListener(new MoveListener(levelMap));	
+	player.createMovableMover(levelMap);	
     }
 }

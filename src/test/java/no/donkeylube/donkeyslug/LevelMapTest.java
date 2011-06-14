@@ -41,12 +41,6 @@ public class LevelMapTest {
 	return new ByteArrayInputStream(s.getBytes());
     }
 
-    // @Test
-    // public void testLoadMap() {
-    // LevelMapTextRenderer renderer = new LevelMapTextRenderer(levelMap);
-    // assertEquals(mapLayout, renderer.render());
-    // }
-
     @Test
     public void testInsertPlaceableAt() {
 	Placeable placeable = mock(Placeable.class);
@@ -60,16 +54,6 @@ public class LevelMapTest {
 	levelMap.addPlaceableAt(placeable, new Coordinates(0, 0));
     }
 
-    // @Test
-    // public void testMapShowsPlayer() {
-    // Placeable player = mock(Player.class);
-    // levelMap.addPlaceableAt(player, new Coordinates(1, 1));
-    // char[] mapWithPlayer = mapLayout.toCharArray();
-    // mapWithPlayer[12] = 'P';
-    // LevelMapTextRenderer renderer = new LevelMapTextRenderer(levelMap);
-    // assertEquals(String.valueOf(mapWithPlayer), renderer.render());
-    // }
-
     @Test
     public void testGetHeight() {
 	LevelMap fourByThreeMap = LevelMapFactory.createSimpleMap(4, 3);
@@ -81,27 +65,12 @@ public class LevelMapTest {
 	LevelMap fourByThreeMap = LevelMapFactory.createSimpleMap(4, 3);
 	assertEquals(3, fourByThreeMap.getWidth());
     }
-
-//    @Test
-//    public void testAllFloorTilesAreAccessible() {
-//	assertTrue(levelMap.allFloorTilesAreAccessible());
-//
-//	String mapLayoutWithInaccessibleFloor =
-//		"rows: 6\n" +
-//			"cols: 10\n" +
-//			"##########\n" +
-//			"#        #\n" +
-//			"#  #######\n" +
-//			"#  ##  # #\n" +
-//			"#      # #\n" +
-//			"##########\n";
-//	LevelMap levelMapWithInaccessibleFloor = createLevelMapFromString(mapLayoutWithInaccessibleFloor);
-//	assertFalse(levelMapWithInaccessibleFloor.allFloorTilesAreAccessible());
-//    }
     
-//    @Test
-//    public void testFindRandomFloorTile() {
-//	Tile tile = levelMap.findRandomFloorTileWithCoordinates().get();
-//	assertTrue(tile.isFloor());
-//    }
+    @Test
+    public void testPlaceableShouldHaveCoordinatesAfterBeingPlacedOnMap() {
+	Placeable placeable = new Item();
+//	when(placeable.setCoordinates(any())).then
+	levelMap.addPlaceableAt(placeable, new Coordinates(1, 1));
+	assertEquals(new Coordinates(1, 1), placeable.getCoordinates());
+    }
 }

@@ -6,8 +6,9 @@ import java.util.List;
 public class Creature implements Placeable, Movable {
     private final String name;
     private final CreatureStatistics creatureStats;
-    private MoveListener moveListener;
+    private MovableMover movableMover;
     private final List<Item> backpack = new LinkedList<Item>();
+    private Coordinates coordinates;
     
     public Creature(String name, CreatureStatistics creatureStats) {
 	this.name = name;
@@ -28,20 +29,14 @@ public class Creature implements Placeable, Movable {
     
     @Override
     public void move(Direction direction) {
-	moveListener.move(this, direction);
-    }
-
-    @Override
-    public void setMoveListener(MoveListener moveListener) {
-	this.moveListener = moveListener;
-	moveListener.registerMovable(this);
+	movableMover.move(direction);
     }
     
     public void kill() {
 	creatureStats.decreaseHitPointsBy(creatureStats.getHitPoints());
     }
 
-    public void pickUp(Item item, Tile tile) {
+    public synchronized void pickUp(Item item, Tile tile) {
 	if (!tile.contains(item)) {
 	    throw new IllegalArgumentException("Tile does not contain specified item.");
 	}
@@ -49,15 +44,38 @@ public class Creature implements Placeable, Movable {
 	backpack.add(item);
     }
 
-    public boolean hasItem(Item item) {
+    public synchronized boolean hasItem(Item item) {
 	return backpack.contains(item);
     }
 
-    public void drop(Item item, Tile tile) {
+    public synchronized void drop(Item item, Tile tile) {
 	if (!backpack.contains(item)) {
 	    throw new IllegalArgumentException("Cannot drop item, because the creature is not carrying it.");
 	}	
 	backpack.remove(item);
 	tile.add(item);
+    }
+
+    public synchronized void give(Item item) {
+	backpack.add(item);
+    }
+
+    public synchronized List<Item> getItems() {
+	return backpack;
+    }
+
+    @Override
+    public Coordinates getCoordinates() {
+	return coordinates;
+    }
+
+    @Override
+    public void setCoordinates(Coordinates coordinates) {
+	this.coordinates = coordinates;
+    }
+
+    @Override
+    public void createMovableMover(LevelMap levelMap) {
+	this.movableMover = new MovableMover(levelMap, this);
     }
 }

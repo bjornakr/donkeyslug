@@ -1,23 +1,12 @@
 package no.donkeylube.donkeyslug;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-
 public class LevelMap {
-    // private final static Logger logger =
-    // Logger.getLogger(LevelMap.class.getName());
     private final Tile[][] tiles;
     private final TileUtils tileUtils;
-
-    // private MoveListener moveListener = new MoveListener(this);
 
     protected LevelMap(Tile[][] tiles) {
 	this.tiles = tiles;
 	tileUtils = new TileUtils(tiles);
-//	if (countAllFloorTiles() == 0) {
-//	    throw new IllegalStateException("Cannot create level map without floor tiles.");
-//	}
     }
 
     public void addPlaceableAt(Placeable placeable, Coordinates coordinates) {
@@ -66,101 +55,7 @@ public class LevelMap {
 	return tiles[0].length;
     }
 
-//    public boolean allFloorTilesAreAccessible() {
-//	int totalNoOfFloorTiles = countAllFloorTiles();
-//	int noOfReachableFloorTiles = countNoOfReachableFloorTilesFrom(findFirstFloorTile(), new LinkedList<Tile>());
-//	return (totalNoOfFloorTiles == noOfReachableFloorTiles);
-//    }
-//
-//    private int countNoOfReachableFloorTilesFrom(Tile baseTile, List<Tile> checkedTiles) {
-//	if (baseTile.isWall()) {
-//	    throw new IllegalArgumentException("Base tile cannot be a wall.");
-//	}
-//	int noOfReachableFloorTilesCount = 1;
-//	checkedTiles.add(baseTile);
-//	for (Tile adjacentFloorTile : getAdjacentFloorTiles(baseTile)) {
-//	    if (!checkedTiles.contains(adjacentFloorTile)) {
-//		noOfReachableFloorTilesCount += countNoOfReachableFloorTilesFrom(adjacentFloorTile, checkedTiles);
-//	    }
-//	}
-//	return noOfReachableFloorTilesCount;
-//    }
-//
-//    private int countAllFloorTiles() {
-//	int totalNoOfFloorTiles = 0;
-//	for (Tile[] tileRows : tiles) {
-//	    for (Tile tile : tileRows) {
-//		if (!tile.isWall()) {
-//		    totalNoOfFloorTiles++;
-//		}
-//	    }
-//	}
-//
-//	return totalNoOfFloorTiles;
-//    }
-//
-//    private Tile findFirstFloorTile() {
-//	for (Tile[] tileRows : tiles) {
-//	    for (Tile tile : tileRows) {
-//		if (!tile.isWall()) {
-//		    return tile;
-//		}
-//	    }
-//	}
-//	throw new IllegalStateException("LevelMap contains no floor tiles.");
-//    }
-//
-//    private List<Tile> getAdjacentFloorTiles(Tile baseTile) {
-//	List<Tile> adjacentFloorTiles = new LinkedList<Tile>();
-//	Coordinates baseTileCoordinates = getCoordinatesFor(baseTile);
-//	for (Coordinates adjacentCoordinate : getAdjacentCoordinates(baseTileCoordinates)) {
-//	    if (!getTile(adjacentCoordinate).isWall()) {
-//		adjacentFloorTiles.add(getTile(adjacentCoordinate));
-//	    }
-//	}
-//	return adjacentFloorTiles;
-//    }
-//
-//    public List<Coordinates> getAdjacentCoordinates(Coordinates baseCoordinates) {
-//	int x = baseCoordinates.getX();
-//	int y = baseCoordinates.getY();
-//
-//	List<Coordinates> adjacentCoordinates = new LinkedList<Coordinates>();
-//	if (x - 1 >= 0) {
-//	    adjacentCoordinates.add(new Coordinates(x - 1, y));
-//	}
-//	if (x < tiles[0].length - 1) {
-//	    adjacentCoordinates.add(new Coordinates(x + 1, y));
-//	}
-//	if (y - 1 >= 0) {
-//	    adjacentCoordinates.add(new Coordinates(x, y - 1));
-//	}
-//	if (y < tiles.length - 1) {
-//	    adjacentCoordinates.add(new Coordinates(x, y + 1));
-//	}
-//	return adjacentCoordinates;
-//    }
-//
-//    public CoordinatesWrapper<Tile> findRandomFloorTileWithCoordinates() {
-//	Random random = new Random();
-//	int x = random.nextInt(getWidth());
-//	int y = random.nextInt(getHeight());
-//
-//	while (!tiles[y][x].isFloor()) {
-//	    x++;
-//	    if (x >= getWidth()) {
-//		x = 1;
-//		y++;
-//		if (y >= getHeight()) {
-//		    y = 1;
-//		}
-//	    }
-//	}
-//
-//	return new CoordinatesWrapper<Tile>(tiles[y][x], new Coordinates(x, y));
-//    }
-
-    public void addPlaceableToRandomTile(Placeable placeable) {
-	tileUtils.findRandomTile(Tile.Type.FLOOR).get().add(placeable);
+    public void addPlaceableToRandomFloorTile(Placeable placeable) {
+	tileUtils.findRandomTile(Tile.Type.FLOOR).add(placeable);
     }
 }

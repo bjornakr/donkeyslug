@@ -30,22 +30,33 @@ public class ItemTest {
 	levelMap.addPlaceableAt(item, coordinatesForItem);
 	creature.pickUp(item, levelMap.getTile(coordinatesForItem));
 	assertTrue("Creature picked up potion", creature.hasItem(item));
-	assertFalse("Potion no longer exists after picking it up",
+	assertFalse("Item is removed from map after picking it up",
 		levelMap.hasPlaceableAt(item, coordinatesForItem));
     }
     
     @Test
-    public void playerDropsItem() {
-	
+    public void canGiveItemToCreature() {
+	creature.give(item);
+	assertTrue(creature.getItems().contains(item));
+    }
+    
+    @Test
+    public void creatureDropsItem() {
+	Coordinates coordinatesForPlayer = new Coordinates(1, 1);
+	creature.give(item);
+	levelMap.addPlaceableAt(creature, coordinatesForPlayer);
+	creature.drop(item, levelMap.getTile(coordinatesForPlayer));
+	assertFalse("Creature dropped item", creature.hasItem(item));
+	assertTrue("Item is now on the ground", levelMap.hasPlaceableAt(item, coordinatesForPlayer));
     }
     
     @Test(expected=RuntimeException.class)
     public void pickingUpItemNotOnFloorShouldRaiseException() {
-	creature.pickUp(new Item(), new Tile(Tile.Type.FLOOR));
+	creature.pickUp(new Item(), new Tile(Tile.Type.FLOOR, mock(Coordinates.class)));
     }
 
     @Test(expected=RuntimeException.class)
     public void droppingItemNotInBackpackShouldRaiseException() {
-	creature.drop(new Item(), new Tile(Tile.Type.FLOOR));
+	creature.drop(new Item(), new Tile(Tile.Type.FLOOR, mock(Coordinates.class)));
     }
 }

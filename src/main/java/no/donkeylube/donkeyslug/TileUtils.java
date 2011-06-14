@@ -1,11 +1,11 @@
 package no.donkeylube.donkeyslug;
 
-import static no.donkeylube.donkeyslug.Tile.Type.*;
+import static no.donkeylube.donkeyslug.Tile.Type.FLOOR;
+import static no.donkeylube.donkeyslug.Tile.Type.WALL;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 public class TileUtils {
     private final Tile[][] tiles;
@@ -20,14 +20,14 @@ public class TileUtils {
 	return (totalNoOfFloorTiles == noOfReachableFloorTiles);
     }
 
-    private int countNoOfReachableFloorTilesFrom(CoordinatesWrapper<Tile> baseTile, List<Tile> checkedTiles) {
-	if (baseTile.get().isWall()) {
+    private int countNoOfReachableFloorTilesFrom(Tile baseTile, List<Tile> checkedTiles) {
+	if (baseTile.isWall()) {
 	    throw new IllegalArgumentException("Base tile cannot be a wall.");
 	}
 	int noOfReachableFloorTilesCount = 1;
-	checkedTiles.add(baseTile.get());
-	for (CoordinatesWrapper<Tile> adjacentFloorTile : getAdjacentTiles(baseTile, FLOOR)) {
-	    if (!checkedTiles.contains(adjacentFloorTile.get())) {
+	checkedTiles.add(baseTile);
+	for (Tile adjacentFloorTile : getAdjacentTiles(baseTile, FLOOR)) {
+	    if (!checkedTiles.contains(adjacentFloorTile)) {
 		noOfReachableFloorTilesCount += countNoOfReachableFloorTilesFrom(adjacentFloorTile, checkedTiles);
 	    }
 	}
@@ -36,28 +36,28 @@ public class TileUtils {
 
     private int countAllTiles(Tile.Type type) {
 	int totalNoOfTiles = 0;
-	for (CoordinatesWrapper<Tile> tile : allTiles()) {
-	    if (tile.get().getType() == type) {
+	for (Tile tile : allTiles()) {
+	    if (tile.type() == type) {
 		totalNoOfTiles++;
 	    }
 	}
 	return totalNoOfTiles;
     }
 
-    public List<CoordinatesWrapper<Tile>> getAdjacentTiles(CoordinatesWrapper<Tile> baseTile, Tile.Type type) {
-	List<CoordinatesWrapper<Tile>> adjacentTiles = new LinkedList<CoordinatesWrapper<Tile>>();
-	for (Coordinates coordinates : getAdjacentCoordinates(baseTile.getCoordinates())) {
-	    if (tiles[coordinates.getY()][coordinates.getX()].getType() == type) {
-		adjacentTiles.add(new CoordinatesWrapper<Tile>(tiles[coordinates.getY()][coordinates.getX()], coordinates));
+    public List<Tile> getAdjacentTiles(Tile baseTile, Tile.Type type) {
+	List<Tile> adjacentTiles = new LinkedList<Tile>();
+	for (Coordinates coordinates : getAdjacentCoordinates(baseTile.coordinates())) {
+	    if (tiles[coordinates.getY()][coordinates.getX()].type() == type) {
+		adjacentTiles.add(tiles[coordinates.getY()][coordinates.getX()]);
 	    }
 	}
 	return adjacentTiles;
     }
     
-//    public List<CoordinatesWrapper<Tile>> getAdjacentTilesWithCoordinates(CoordinatesWrapper<Tile> baseTile) {
-//	List<CoordinatesWrapper<Tile>> adjacentTiles = new LinkedList<CoordinatesWrapper<Tile>>();
+//    public List<Tile> getAdjacentTilesWithCoordinates(Tile baseTile) {
+//	List<Tile> adjacentTiles = new LinkedList<Tile>();
 //	for (Coordinates coordinates : getAdjacentCoordinates(baseTile.getCoordinates())) {
-//	    adjacentTiles.add(new CoordinatesWrapper<Tile>(tiles[coordinates.getY()][coordinates.getY()], coordinates));
+//	    adjacentTiles.add(new Tile(tiles[coordinates.getY()][coordinates.getY()], coordinates));
 //	}
 //	return adjacentTiles;
 //    }
@@ -83,36 +83,36 @@ public class TileUtils {
 	return adjacentCoordinates;
     }
 
-    public CoordinatesWrapper<Tile> findRandomTile(Tile.Type type) {
+    public Tile findRandomTile(Tile.Type type) {
 	if (countAllTiles(type) == 0) {
 	    throw new IllegalStateException("No tiles of type " + type + " in the tile collection.");
 	}
-	List<CoordinatesWrapper<Tile>> allTiles = allTiles();
+	List<Tile> allTiles = allTiles();
 	Collections.shuffle(allTiles);
 
-	for (CoordinatesWrapper<Tile> tile : allTiles) {
-	    if (tile.get().getType() == type) {
+	for (Tile tile : allTiles) {
+	    if (tile.type() == type) {
 		return tile;
 	    }
 	}
 	return null;
     }
 
-    private List<CoordinatesWrapper<Tile>> allTiles() {
-	List<CoordinatesWrapper<Tile>> tileList = new LinkedList<CoordinatesWrapper<Tile>>();
+    private List<Tile> allTiles() {
+	List<Tile> tileList = new LinkedList<Tile>();
 	for (int y = 0; y < tiles.length; y++) {
 	    for (int x = 0; x < tiles[0].length; x++) {
-		tileList.add(new CoordinatesWrapper<Tile>(tiles[y][x], new Coordinates(x, y)));
+		tileList.add(tiles[y][x]);
 	    }
 	}
 	return tileList;
     }
 
-    public CoordinatesWrapper<Tile> findRandomFloorTileWithAdjacentWall() {
-	List<CoordinatesWrapper<Tile>> allTiles = allTiles();
+    public Tile findRandomFloorTileWithAdjacentWall() {
+	List<Tile> allTiles = allTiles();
 	Collections.shuffle(allTiles);
-	for (CoordinatesWrapper<Tile> tile : allTiles) {
-	    if (tile.get().isFloor() && getAdjacentTiles(tile, WALL).size() > 0) {
+	for (Tile tile : allTiles) {
+	    if (tile.isFloor() && getAdjacentTiles(tile, WALL).size() > 0) {
 		return tile;
 	    }
 	}
@@ -124,31 +124,32 @@ public class TileUtils {
 	}
     }
 
-    public Direction getDirectionBetweenTiles(CoordinatesWrapper<Tile> fromTile, CoordinatesWrapper<Tile> toTile) {
+    public Direction getDirectionBetweenTiles(Tile fromTile, Tile toTile) {
 	if (!getAdjacentTiles(fromTile).contains(toTile)) {
 	    throw new IllegalArgumentException("Tiles are not adjacant to eachother.");
 	}
-	if (fromTile.getX() < toTile.getX()) {
+	if (fromTile.coordinates().getX() < toTile.coordinates().getX()) {
 	    return Direction.EAST;
 	}
-	else if (fromTile.getX() > toTile.getX()) {
+	else if (fromTile.coordinates().getX() > toTile.coordinates().getX()) {
 	    return Direction.WEST;
 	}
-	else if (fromTile.getY() < toTile.getY()) {
+	else if (fromTile.coordinates().getY() < toTile.coordinates().getY()) {
 	    return Direction.SOUTH;
 	}
-	else if (fromTile.getY() > toTile.getY()) {
+	else if (fromTile.coordinates().getY() > toTile.coordinates().getY()) {
 	    return Direction.NORTH;
 	}
 	assert false;
 	return null;
     }
 
-    public List<CoordinatesWrapper<Tile>> getAdjacentTiles(CoordinatesWrapper<Tile> baseTile) {
-	List<CoordinatesWrapper<Tile>> adjacentTiles = new LinkedList<CoordinatesWrapper<Tile>>();
+    public List<Tile> getAdjacentTiles(Tile baseTile) {
+	List<Tile> adjacentTiles = new LinkedList<Tile>();
 	for (Tile.Type type : Tile.Type.values()) {
 	    adjacentTiles.addAll(getAdjacentTiles(baseTile, type));
 	}
 	return adjacentTiles;
     }
+
 }

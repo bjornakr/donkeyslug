@@ -1,10 +1,10 @@
 package no.donkeylube.donkeyslug;
 
-import static no.donkeylube.donkeyslug.Tile.Type.*;
+import static no.donkeylube.donkeyslug.Tile.Type.FLOOR;
+import static no.donkeylube.donkeyslug.Tile.Type.WALL;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import no.donkeylube.donkeyslug.helpers.RandomDistributor;
 
@@ -41,19 +41,19 @@ public class LevelMapGenerator {
     }
 
     private void digTunnel() {
-	CoordinatesWrapper<Tile> baseTile = tileUtils.findRandomFloorTileWithAdjacentWall();
-	List<CoordinatesWrapper<Tile>> adjacentWalls = tileUtils.getAdjacentTiles(baseTile, Tile.Type.WALL);
+	Tile baseTile = tileUtils.findRandomFloorTileWithAdjacentWall();
+	List<Tile> adjacentWalls = tileUtils.getAdjacentTiles(baseTile, Tile.Type.WALL);
 	Collections.shuffle(adjacentWalls);
-	CoordinatesWrapper<Tile> wallTile = adjacentWalls.get(0);
+	Tile wallTile = adjacentWalls.get(0);
 	Direction direction = tileUtils.getDirectionBetweenTiles(baseTile, wallTile);
 	dig(baseTile, direction);
     }
 
-    private void dig(CoordinatesWrapper<Tile> baseTile, Direction direction) {
+    private void dig(Tile baseTile, Direction direction) {
 	final double CHANCE_OF_TURN = 0.1;
 	
-	int nextX = baseTile.getX();
-	int nextY = baseTile.getY();
+	int nextX = baseTile.coordinates().getX();
+	int nextY = baseTile.coordinates().getY();
 	switch (direction) {
 	case NORTH:
 	    nextY--; break;
@@ -65,21 +65,21 @@ public class LevelMapGenerator {
 	    nextX--; break;
 	}
 	if (nextX < 0 || nextX >= tiles[0].length) {
-	    nextX = baseTile.getX();
+	    nextX = baseTile.coordinates().getX();
 	}
 	if (nextY < 0 || nextY >= tiles.length) {
-	    nextY = baseTile.getY();
+	    nextY = baseTile.coordinates().getY();
 	}
 	Coordinates nextCoordinates = new Coordinates(nextX, nextY);
-	if (baseTile.getCoordinates().equals(nextCoordinates)) {
+	if (baseTile.coordinates().equals(nextCoordinates)) {
 	    return;
 	}
-	CoordinatesWrapper<Tile> nextTile = new CoordinatesWrapper<Tile>(tiles[nextY][nextX], nextCoordinates);
-	if (nextTile.get().isFloor()) {
+	Tile nextTile = tiles[nextY][nextX];
+	if (nextTile.isFloor()) {
 	    return;
 	}
 	else {
-	    tiles[nextY][nextX] = new Tile(FLOOR);
+	    tiles[nextY][nextX] = new Tile(FLOOR, new Coordinates(nextX, nextY));
 	    double random = Math.random();
 	    if (random < CHANCE_OF_TURN) {
 		direction = direction.turnLeft();
@@ -94,13 +94,13 @@ public class LevelMapGenerator {
 	}
     }
 
-    // private CoordinatesWrapper<Tile>
+    // private Tile
     // findFloorTileWithAdjacentWallTile(LevelMap levelMap) {
-    // CoordinatesWrapper<Tile> tileWithCoordinates =
+    // Tile tileWithCoordinates =
     // levelMap.findRandomFloorTileWithCoordinates();
-    // List<CoordinatesWrapper<Tile>> ajacentTiles =
+    // List<Tile> ajacentTiles =
     // levelMap.getAdjacentTilesWithCoordinates(tileWithCoordinates);
-    // for (CoordinatesWrapper<Tile> tileCoordinatesWrapper : ajacentTiles) {
+    // for (Tile tileCoordinatesWrapper : ajacentTiles) {
     // if (tileCoordinatesWrapper.get().isWall()) {
     // return tileWithCoordinates;
     // }
@@ -109,7 +109,7 @@ public class LevelMapGenerator {
     // }
 
     private void makeRoom(int roomHeight, int roomWidth, int noOfIterations) {
-	Coordinates roomStartCoordinates = tileUtils.findRandomTile(WALL).getCoordinates();
+	Coordinates roomStartCoordinates = tileUtils.findRandomTile(WALL).coordinates();
 	Coordinates roomEndCoordinates = new Coordinates(roomStartCoordinates.getX() + roomWidth,
 		roomStartCoordinates.getY() + roomHeight);
 	if (!collission(roomStartCoordinates, roomEndCoordinates)) {
@@ -167,7 +167,7 @@ public class LevelMapGenerator {
     private void fillRectangle(Tile.Type type, Coordinates startCoordinates, Coordinates endCoordinates) {
 	for (int y = startCoordinates.getY(); y < endCoordinates.getY(); y++) {
 	    for (int x = startCoordinates.getX(); x < endCoordinates.getX(); x++) {
-		tiles[y][x] = new Tile(type);
+		tiles[y][x] = new Tile(type, new Coordinates(x, y));
 	    }
 	}
     }

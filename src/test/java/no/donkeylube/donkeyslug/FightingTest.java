@@ -63,7 +63,7 @@ public class FightingTest {
     private void placePlayerAndTrainingDummy(LevelMap levelMap,
 	    Coordinates coordinatesForPlayer, Coordinates coordinatesForTrainingDummy) {
 	levelMap.addPlaceableAt(player, coordinatesForPlayer);
-	player.setMoveListener(new MoveListener(levelMap));
+	player.createMovableMover(levelMap);
 	levelMap.addPlaceableAt(trainingDummy, coordinatesForTrainingDummy);	
     }
     

@@ -16,10 +16,10 @@ public class LevelMapFactory {
 	int noOfCols = extractHeaderInfo("cols", bufferedReader.readLine());
 	Tile[][] tiles = new Tile[noOfRows][noOfCols];
 	char currentTileRepresentation;
-	for (int i = 0; i < noOfRows; i++) {
-	    for (int j = 0; j < noOfCols; j++) {
+	for (int y = 0; y < noOfRows; y++) {
+	    for (int x = 0; x < noOfCols; x++) {
 		currentTileRepresentation = readCharacterAndSkipLinefeeds(bufferedReader);
-		tiles[i][j] = createTileFromCharRepresentation(currentTileRepresentation, i, j);
+		tiles[y][x] = createTileFromCharRepresentation(currentTileRepresentation, y, x);
 	    }
 	}	
 	return new LevelMap(tiles);
@@ -39,12 +39,12 @@ public class LevelMapFactory {
 	return c;
     }
 
-    private static Tile createTileFromCharRepresentation(char representation, int i, int j) {	
+    private static Tile createTileFromCharRepresentation(char representation, int y, int x) {	
 	if (representation == '#') {
-	    return new Tile(Tile.Type.WALL);
+	    return new Tile(Tile.Type.WALL, new Coordinates(x, y));
 	}
 	else if (representation == ' ') {
-	    return new Tile(Tile.Type.FLOOR);
+	    return new Tile(Tile.Type.FLOOR, new Coordinates(x, y));
 	}
 	else {
 	    throw new IllegalArgumentException("Unexpected character: '" + representation + "'");
@@ -90,48 +90,5 @@ public class LevelMapFactory {
 	else {
 	    return false;
 	}
-    }
-
-    public static LevelMap generateLevelMap(int width, int height) {
-	Tile[][] tiles = new Tile[height][width];	
-	for (int y = 0; y < tiles.length; y++) {
-	    for (int x = 0; x < tiles[y].length; x++) {
-		if (isEdge(height, width, new Coordinates(x, y))) {
-		    tiles[y][x] = new Tile(Tile.Type.WALL);
-		}
-		else {
-		    tiles[y][x] = createRandomTile(tiles, new Coordinates(x, y));
-		}
-	    }
-	}	
-	return new LevelMap(tiles);
-    }
-
-    private static Tile createRandomTile(Tile[][] tiles, Coordinates coordinates) {
-	double chanceOfWall = calculateChanceOfWall(tiles, coordinates); 
-	Tile randomTile;
-	if (Math.random() < chanceOfWall && hasAdjacentWall(tiles, coordinates)) {
-	    randomTile = new Tile(Tile.Type.WALL);
-	}
-	else {
-	    randomTile = new Tile(Tile.Type.FLOOR);
-	}
-	return randomTile;
-    }
-
-    private static boolean hasAdjacentWall(Tile[][] tiles, Coordinates coordinates) {
-	if (tiles[coordinates.getY()-1][coordinates.getX()].isWall()) {
-	    return true;
-	}
-	if (tiles[coordinates.getY()][coordinates.getX()-1].isWall()) {
-	    return true;
-	}
-	else {
-	    return false;
-	}
-    }
-
-    private static double calculateChanceOfWall(Tile[][] tiles, Coordinates coordinates) {
-	return 0.60;
     }
 }

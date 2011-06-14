@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 import no.donkeylube.donkeyslug.Coordinates;
 import no.donkeylube.donkeyslug.Movable;
+import no.donkeylube.donkeyslug.Player;
 import no.donkeylube.donkeyslug.Tile;
 
 public class LevelMapPainter extends JPanel {
@@ -57,6 +58,20 @@ public class LevelMapPainter extends JPanel {
 	int sizeRedux = BLOCKSIZE / 4;
 	for (Tile[] tileRow : tiles) {
 	    for (Tile tile : tileRow) {
+		if (tile.getItems().size() > 0) {
+		    g2.setColor(Color.ORANGE);
+		    g2.fillRect(brushPosX + sizeRedux, brushPosY + sizeRedux, BLOCKSIZE - sizeRedux*2, BLOCKSIZE - sizeRedux*2);
+		}
+		else if (tile.getAttackable() != null && !(tile.getAttackable() instanceof Player)) {
+		    if (tile.getAttackable().isDead()) {
+			g2.setColor(Color.BLACK);
+		    }
+		    else {
+			g2.setColor(Color.RED);
+		    }
+		    g2.fillOval(brushPosX + sizeRedux, brushPosY + sizeRedux,
+			    BLOCKSIZE - sizeRedux * 2, BLOCKSIZE - sizeRedux * 2);
+		}
 		if (tile.hasPlayer()) {
 		    int newXForMovable = 0;
 		    int newYForMovable = 0;
@@ -67,7 +82,7 @@ public class LevelMapPainter extends JPanel {
 		    Coordinates oldCoordingatesForMovable = movableCoordinates.get(tile.getMovable());
 		    newXForMovable = determineNewBrushPositionForMovable(brushPosX, oldCoordingatesForMovable.getX());
 		    newYForMovable = determineNewBrushPositionForMovable(brushPosY, oldCoordingatesForMovable.getY());
-		    
+
 		    if (newXForMovable == brushPosX && newYForMovable == brushPosY) {
 			movablesAreMoving = false;
 		    }
@@ -76,16 +91,6 @@ public class LevelMapPainter extends JPanel {
 			    BLOCKSIZE - (sizeRedux * 2), BLOCKSIZE - sizeRedux * 2);
 		    movableCoordinates.put(tile.getMovable(), new Coordinates(newXForMovable, newYForMovable));
 		}
-		else if (tile.getAttackable() != null) {
-		    if (tile.getAttackable().isDead()) {
-			g2.setColor(Color.BLACK);
-		    }
-		    else {
-			g2.setColor(Color.RED);
-		    }
-		    g2.fillOval(brushPosX + sizeRedux, brushPosY + sizeRedux,
-			    BLOCKSIZE - sizeRedux * 2, BLOCKSIZE - sizeRedux * 2);
-		}
 		brushPosX += BLOCKSIZE;
 	    }
 	    brushPosX = 0;
@@ -93,9 +98,9 @@ public class LevelMapPainter extends JPanel {
 	}
     }
 
-    private int determineNewBrushPositionForMovable(int currentBrushPosition, int currentCoordinatesForMovable) {	
+    private int determineNewBrushPositionForMovable(int currentBrushPosition, int currentCoordinatesForMovable) {
 	final int MOVEMENT = 4;
-	
+
 	if (currentBrushPosition == currentCoordinatesForMovable) {
 	    return currentBrushPosition;
 	}
@@ -107,16 +112,15 @@ public class LevelMapPainter extends JPanel {
 	    if (newBrushPosistion < currentBrushPosition) {
 		newBrushPosistion = currentBrushPosition;
 	    }
-    	}
+	}
 	else if (currentBrushPosition > currentCoordinatesForMovable) {
 	    newBrushPosistion = currentCoordinatesForMovable + MOVEMENT;
 	    if (newBrushPosistion > currentBrushPosition) {
 		newBrushPosistion = currentBrushPosition;
 	    }
-    	}
+	}
 	return newBrushPosistion;
     }
-
 
     public boolean finishedMovingMovables() {
 	return !movablesAreMoving;
