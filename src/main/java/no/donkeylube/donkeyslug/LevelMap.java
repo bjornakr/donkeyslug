@@ -10,6 +10,9 @@ public class LevelMap {
     }
 
     public void addPlaceableAt(Placeable placeable, Coordinates coordinates) {
+	if (placeable instanceof Movable) {
+	    ((Movable) placeable).createMovableMover(this);	    
+	}
 	tiles[coordinates.getY()][coordinates.getX()].add(placeable);
     }
 
@@ -56,6 +59,7 @@ public class LevelMap {
     }
 
     public void addPlaceableToRandomFloorTile(Placeable placeable) {
-	tileUtils.findRandomTile(Tile.Type.FLOOR).add(placeable);
+	Tile randomTile = tileUtils.findRandomTile(Tile.Type.FLOOR);
+	addPlaceableAt(placeable, randomTile.coordinates());
     }
 }

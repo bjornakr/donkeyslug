@@ -1,9 +1,14 @@
 package no.donkeylube.donkeyslug;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class AttackableFighterCreature extends Creature implements Attackable, Fighter {
     private final CreatureStatistics myStats;
     private final String name;
     private Weapon weapon;
+    private List<AttackListener> attackListeners = new LinkedList<AttackListener>();
+
     
     public AttackableFighterCreature(String name, CreatureStatistics creatureStats) {
 	super(name, creatureStats);
@@ -22,6 +27,7 @@ public class AttackableFighterCreature extends Creature implements Attackable, F
 	else {
 	    notifyMissToReporter();	    
 	}
+	notifyAttackListeners(null);
     }
 
     private void notifyMissToReporter() {
@@ -31,13 +37,6 @@ public class AttackableFighterCreature extends Creature implements Attackable, F
     private void notifyAttackToReporter(Attackable opponent) {
 	GameReporter.getInstance().offer(name + " attacks " + opponent.getName() +
 		" with " + weapon.getName().toLowerCase() + ".");
-    }
-
-    @Override
-    public boolean dodgesAttack(int dexterityOfOpponent) {
-	double dexterityComparison = (myStats.getDexterity() - dexterityOfOpponent) / 100;
-	double chanceToDodge = 0.3 + dexterityComparison;
-	return Math.random() < chanceToDodge;
     }
 
     @Override
@@ -63,4 +62,16 @@ public class AttackableFighterCreature extends Creature implements Attackable, F
     public Weapon getWeapon() {
 	return weapon;
     }
-}    
+
+    @Override
+    public void addAttackListener(AttackListener attackListener) {
+	attackListeners.add(attackListener);	
+    }
+
+    @Override
+    public void notifyAttackListeners(AttackReport attackReport) {
+	for (AttackListener attackListener : attackListeners) {
+	    attackListener.attackPerformed(attackReport);
+	}	
+    }
+}

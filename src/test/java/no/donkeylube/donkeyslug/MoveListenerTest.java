@@ -1,79 +1,54 @@
 package no.donkeylube.donkeyslug;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.LinkedList;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 public class MoveListenerTest {
-    private Player player;
+    private AttackableFighterCreature player;
     private LevelMap levelMap;
+    private TestListener testListener;
     
     @Before
-    public void initializePlayer() {
-	player = new Player("Player", mock(CreatureStatistics.class));
-    }
-    
-    @Test
-    public void testMovableShouldNotBeAbleToMoveThroughWalls() {
-	levelMap = LevelMapFactory.createSimpleMap(3, 3);
-	Coordinates initialCoordinates = new Coordinates(1, 1);
-	levelMap.addPlaceableAt(player, initialCoordinates);
-	player.createMovableMover(levelMap);
-	player.move(Direction.NORTH);
-	assertEquals(initialCoordinates, levelMap.getCoordinatesFor(player));
-	player.move(Direction.EAST);
-	assertEquals(initialCoordinates, levelMap.getCoordinatesFor(player));
-	player.move(Direction.SOUTH);
-	assertEquals(initialCoordinates, levelMap.getCoordinatesFor(player));
-	player.move(Direction.WEST);
-	assertEquals(initialCoordinates, levelMap.getCoordinatesFor(player));
-    }
-    
-    @Test
-    public void testGoNorth() {
-	setupMapAndPlayer();
-	player.move(Direction.NORTH);
-	assertEquals(new Coordinates(2, 1), levelMap.getCoordinatesFor(player));
-    }
-    
-    @Test
-    public void testGoEast() {
-	setupMapAndPlayer();
-	player.move(Direction.EAST);
-	assertEquals(new Coordinates(3, 2), levelMap.getCoordinatesFor(player));
-    }
-
-    @Test
-    public void testGoSouth() {
-	setupMapAndPlayer();
-	player.move(Direction.SOUTH);
-	assertEquals(new Coordinates(2, 3), levelMap.getCoordinatesFor(player));
-    }
-
-    @Test
-    public void testGoWest() {
-	setupMapAndPlayer();
-	player.move(Direction.WEST);
-	assertEquals(new Coordinates(1, 2), levelMap.getCoordinatesFor(player));
-    }
-    
-    @Test
-    public void testGoSouthTwoTimes() {
-	levelMap = LevelMapFactory.createSimpleMap(5, 5);	
-	Coordinates initialCoordinates = new Coordinates(2, 1);
-	levelMap.addPlaceableAt(player, initialCoordinates);
-	player.createMovableMover(levelMap);
-	player.move(Direction.SOUTH);
-	player.move(Direction.SOUTH);
-	assertEquals(new Coordinates(2, 3), levelMap.getCoordinatesFor(player));
-    }
-    
-    private void setupMapAndPlayer() {
+    public void initializeLevelMapAndCreature() {
+	testListener = new TestListener();
 	levelMap = LevelMapFactory.createSimpleMap(5, 5);
-	Coordinates initialCoordinates = new Coordinates(2, 2);
-	levelMap.addPlaceableAt(player, initialCoordinates);
-	player.createMovableMover(levelMap);	
+	player = new Player("Guy", new CreatureStatistics.Builder(10, 10).build());
+	levelMap.addPlaceableAt(player, new Coordinates(1, 1));	
+    }
+    
+    @Test
+    public void testMoveNotification() {
+	player.addMoveListener(testListener);
+	player.move(Direction.EAST);
+	assertEquals("Movable moved", testListener.poll());	
+    }
+    
+    @Test
+    public void testAttackNotification() {
+	player.addAttackListener(testListener);
+	AttackableFighterCreature zerglingToTheEast =
+	    new AttackableFighterCreature("Zergling", new CreatureStatistics.Builder(10, 10).build());
+	levelMap.addPlaceableAt(zerglingToTheEast, new Coordinates(2, 1));	
+	player.move(Direction.EAST);
+	assertEquals("Fighter attacked", testListener.poll());
+    }
+    
+    private class TestListener extends LinkedList<String> implements MoveListener, AttackListener {
+	private static final long serialVersionUID = 1L;
+
+	@Override
+	public void movePerformed(Movable source) {
+	    offer("Movable moved");
+	}
+	
+	@Override
+	public void attackPerformed(AttackReport attackReport) {
+	    offer("Fighter attacked");
+	}
     }
 }

@@ -98,7 +98,7 @@ public class TileUtils {
 	return null;
     }
 
-    private List<Tile> allTiles() {
+    public List<Tile> allTiles() {
 	List<Tile> tileList = new LinkedList<Tile>();
 	for (int y = 0; y < tiles.length; y++) {
 	    for (int x = 0; x < tiles[0].length; x++) {

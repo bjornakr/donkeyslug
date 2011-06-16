@@ -8,12 +8,14 @@ import java.util.HashMap;
 
 import javax.swing.JPanel;
 
+import no.donkeylube.donkeyslug.AttackListener;
+import no.donkeylube.donkeyslug.AttackReport;
 import no.donkeylube.donkeyslug.Coordinates;
 import no.donkeylube.donkeyslug.Movable;
 import no.donkeylube.donkeyslug.Player;
 import no.donkeylube.donkeyslug.Tile;
 
-public class LevelMapPainter extends JPanel {
+public class LevelMapPainter extends JPanel implements AttackListener {
     private static final long serialVersionUID = 1L;
     private final int BLOCKSIZE = 20;
     private Tile[][] tiles;
@@ -124,5 +126,10 @@ public class LevelMapPainter extends JPanel {
 
     public boolean finishedMovingMovables() {
 	return !movablesAreMoving;
+    }
+
+    @Override
+    public void attackPerformed(AttackReport attackReport) {
+	
     }
 }

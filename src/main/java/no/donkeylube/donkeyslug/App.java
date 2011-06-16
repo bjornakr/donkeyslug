@@ -2,7 +2,6 @@ package no.donkeylube.donkeyslug;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
@@ -23,9 +22,14 @@ public class App implements KeyListener {
 	levelMap.addPlaceableToRandomFloorTile(player);
 	AttackableFighterCreature zergling = new AttackableFighterCreature("Zergling", new CreatureStatistics.Builder(
 		5, 5).build());
+	zergling.setBehavior(new ChaseAndAttackBehavior());
+	AttackableFighterCreature zergling2 = new AttackableFighterCreature("Zergling", new CreatureStatistics.Builder(
+		5, 5).build());
+	zergling2.setBehavior(new ChaseAndAttackBehavior());
 	levelMap.addPlaceableToRandomFloorTile(zergling);
+	levelMap.addPlaceableToRandomFloorTile(zergling2);
 	levelMap.addPlaceableToRandomFloorTile(new Item());
-	player.createMovableMover(levelMap);
+//	player.createMovableMover(levelMap);
 	mapPainter = new LevelMapPainter(levelMap.getTiles());
 	mainWindow = new MainWindow(mapPainter);
 	mainWindow.addKeyListener(this);
@@ -35,6 +39,8 @@ public class App implements KeyListener {
 	while (true) {
 	    if (mapPainter.finishedMovingMovables() && !directionsPressed.isEmpty()) {
 		player.move(directionsPressed.peek());
+		zergling.performBehavior();
+		zergling2.performBehavior();
 	    }
 
 	    mapPainter.repaint();

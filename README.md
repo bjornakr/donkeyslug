@@ -14,11 +14,11 @@ procured from the various literature I've been reading. :)
 
 CURRENT GOAL(S)
 ---------------
-* Simple view that makes the game playable
-* Items (should be placed on the map, picked up, and used in various ways)
-* Make Creatures
-  - carry items
-  - wear armor
+* Monster AI
+  - movement (run away, search for player, patrol, sleep, ...)
+  - aggro
+  - call swarm
+  - attack enemy monsters
 * Automatic map generation
 
 
@@ -26,18 +26,17 @@ FUTURE
 ------
 * System for importing Items and Creatures, taking it out of the code.
   - Maybe <del>JSON</del> YAML is suited for this?
-* Monster AI
-  - movement (run away, search for player, patrol, sleep, ...)
-  - aggro
-  - call swarm
-  - attack enemy monsters
+* Interaction with items
 * Leveling and scaling
 * Ranged combat
-
+* Alchemy
+* Traps
 
 
 COMPLETED
 ---------
-Currently the game supports (extremely simple) parsing of acii-maps, where you can place things like Items, Players and
-Creatures. Creatures can move around (not by themselves, though), and they can fight each other with a preliminary
-battle algorithm.
+* Simple view for play testing
+* Player and creatures can move around, attack, pick up and drop items
+* Simple parsing of hand made ascii maps
+* Automatic level generator 
+* Preliminary battle algorithm
