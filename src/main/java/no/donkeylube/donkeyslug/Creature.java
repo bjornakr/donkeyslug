@@ -2,6 +2,7 @@ package no.donkeylube.donkeyslug;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
 public class Creature implements Placeable, Movable {
     private final String name;
@@ -44,6 +45,9 @@ public class Creature implements Placeable, Movable {
     }
 
     public synchronized void pickUp(Item item, Tile tile) {
+	if (isDead()) {
+	    throw new IllegalStateException("Dead creatures cannot pick up items.");
+	}
 	if (!tile.contains(item)) {
 	    throw new IllegalArgumentException("Tile does not contain specified item.");
 	}
@@ -104,7 +108,9 @@ public class Creature implements Placeable, Movable {
     }
 
     public void performBehavior() {
-	behavior.execute();
+	if (!isDead()) {
+	    behavior.execute();
+	}
     }
     
     public void setFieldOfVision(List<Tile> tiles) {
@@ -115,25 +121,30 @@ public class Creature implements Placeable, Movable {
 	List<Attackable> attackables = new LinkedList<Attackable>();
 	for (Tile tile : fieldOfVision) {
 	    Attackable attackable = tile.getAttackable();
-	    if (attackable != null && !attackable.equals(this)) {
+	    if (attackable != null && !attackable.equals(this) && !attackable.isDead()) {
 		attackables.add(attackable);
 	    }
 	}
 	return attackables;
     }
 
-    public void moveTowards(Coordinates targetCoordinates) {
-	if (getCoordinates().getX() < targetCoordinates.getX()) {
-	    move(Direction.EAST);
-	}
-	else if (getCoordinates().getX() > targetCoordinates.getX()) {
-	    move(Direction.WEST);
-	}
-	if (getCoordinates().getY() < targetCoordinates.getY()) {
-	    move(Direction.SOUTH);
-	}
-	else if (getCoordinates().getY() > targetCoordinates.getY()) {
-	    move(Direction.NORTH);
-	}	
+    public void moveTowards(Coordinates targetCoordinates) {	
+	Stack<Tile> shortestPath = movableMover.findShortestPathTo(targetCoordinates);
+	Tile destinationTile = shortestPath.pop();
+	movableMover.move(destinationTile);
+	// no movelistener
+
+//	if (getCoordinates().getX() < targetCoordinates.getX()) {
+//	    move(Direction.EAST);
+//	}
+//	else if (getCoordinates().getX() > targetCoordinates.getX()) {
+//	    move(Direction.WEST);
+//	}
+//	if (getCoordinates().getY() < targetCoordinates.getY()) {
+//	    move(Direction.SOUTH);
+//	}
+//	else if (getCoordinates().getY() > targetCoordinates.getY()) {
+//	    move(Direction.NORTH);
+//	}	
     }
 }

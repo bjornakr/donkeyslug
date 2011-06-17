@@ -19,8 +19,6 @@ CURRENT GOAL(S)
   - aggro
   - call swarm
   - attack enemy monsters
-* Automatic map generation
-
 
 FUTURE
 ------
@@ -31,12 +29,15 @@ FUTURE
 * Ranged combat
 * Alchemy
 * Traps
-
+* Cooler, player-centric view with minimap for play testing
+* Moving to new levels
+* More algorithms for level generation
 
 COMPLETED
 ---------
 * Simple view for play testing
-* Player and creatures can move around, attack, pick up and drop items
+* Player and creatures can move around (limited to four directions), attack, pick up and drop items
 * Simple parsing of hand made ascii maps
-* Automatic level generator 
+* Level generator (square rooms, digs random tunnels until all rooms are connected) 
 * Preliminary battle algorithm
+* Creatures can find their way out of a paper bag - and find the shortest path to whatever they are pursuing

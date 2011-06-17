@@ -20,7 +20,7 @@ public class LevelMapGenerator {
     public LevelMap generate(int height, int width) {
 	initializeTilesAndTileUtils(height, width);
 	fillRectangle(WALL, new Coordinates(0, 0), new Coordinates(width, height));
-	createRooms(2);
+	createRooms(9);
 
 	while (!tileUtils.allFloorTilesAreAccessible()) {
 //	for (int i = 0; i < 1; i++) {
