@@ -13,6 +13,7 @@ public class Creature implements Placeable, Movable {
     private Coordinates coordinates;
     private List<Tile> fieldOfVision;
     private Behavior behavior;
+    private PathFinder pathFinder;
     
     public Creature(String name, CreatureStatistics creatureStats) {
 	this.name = name;
@@ -86,8 +87,8 @@ public class Creature implements Placeable, Movable {
     }
 
     @Override
-    public void createMovableMover(LevelMap levelMap) {
-	this.movableMover = new MovableMover(levelMap, this);
+    public void setMovableMover(MovableMover movableMover) {
+	this.movableMover = movableMover;
     }
 
     @Override
@@ -106,7 +107,7 @@ public class Creature implements Placeable, Movable {
 	behavior.setCreature(this);
 	this.behavior = behavior;
     }
-
+    
     public void performBehavior() {
 	if (!isDead()) {
 	    behavior.execute();
@@ -129,22 +130,18 @@ public class Creature implements Placeable, Movable {
     }
 
     public void moveTowards(Coordinates targetCoordinates) {	
-	Stack<Tile> shortestPath = movableMover.findShortestPathTo(targetCoordinates);
+	Stack<Tile> shortestPath = pathFinder.findShortestPathTo(targetCoordinates);
 	Tile destinationTile = shortestPath.pop();
 	movableMover.move(destinationTile);
 	// no movelistener
+    }
 
-//	if (getCoordinates().getX() < targetCoordinates.getX()) {
-//	    move(Direction.EAST);
-//	}
-//	else if (getCoordinates().getX() > targetCoordinates.getX()) {
-//	    move(Direction.WEST);
-//	}
-//	if (getCoordinates().getY() < targetCoordinates.getY()) {
-//	    move(Direction.SOUTH);
-//	}
-//	else if (getCoordinates().getY() > targetCoordinates.getY()) {
-//	    move(Direction.NORTH);
-//	}	
+    @Override
+    public void setPathFinder(PathFinder pathFinder) {
+	this.pathFinder = pathFinder;
+    }
+
+    public boolean sees(Placeable placeable) {
+	return false;
     }
 }

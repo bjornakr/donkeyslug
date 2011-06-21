@@ -16,8 +16,8 @@ public class GameReporter extends LinkedBlockingQueue<String> {
 	return instance;
     }
     
-    public boolean offer(String message) {
-	System.out.println(message);
-	return super.offer(message);
-    }
+//    public boolean offer(String message) {
+//	System.out.println(message);
+//	return super.offer(message);
+//    }
 }

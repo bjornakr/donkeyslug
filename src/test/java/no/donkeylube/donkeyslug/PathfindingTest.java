@@ -55,5 +55,4 @@ public class PathfindingTest {
 	}
 	return levelMap;
     }
-
 }

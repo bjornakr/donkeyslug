@@ -22,7 +22,6 @@ public class DonkeyslugEndToEndTest {
     public void loadMapAndWalkAround() {
 	LevelMap levelMap = loadMapFromFile();
 	levelMap.addPlaceableAt(player, new Coordinates(20, 2));
-	player.createMovableMover(levelMap);
 	movePlayerToBottomRightCornerWhileHittingWalls();
 	String expectedOverview =
 		"#######################\n"

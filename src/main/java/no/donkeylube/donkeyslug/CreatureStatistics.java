@@ -4,6 +4,7 @@ public class CreatureStatistics {
     private int strength;
     private int dexterity;
     private int hitPoints;
+    private int sightRange;
 
     public static class Builder {
 	// Required
@@ -12,6 +13,7 @@ public class CreatureStatistics {
 
 	// Optional
 	private int hitPoints = 100;
+	private int sightRange = 10;
 
 	public Builder(int strength, int dexterity) {
 	    this.strength = strength;
@@ -20,6 +22,11 @@ public class CreatureStatistics {
 
 	public Builder hitPoints(int value) {
 	    hitPoints = value;
+	    return this;
+	}
+
+	public Builder sightRange(int sightRange) {
+	    this.sightRange = sightRange; 
 	    return this;
 	}
 
@@ -32,6 +39,7 @@ public class CreatureStatistics {
 	strength = builder.strength;
 	dexterity = builder.dexterity;
 	hitPoints = builder.hitPoints;
+	sightRange = builder.sightRange;
     }
 
     public int getStrength() {
@@ -44,6 +52,10 @@ public class CreatureStatistics {
 
     public int getHitPoints() {
 	return hitPoints;
+    }
+    
+    public int getSightRange() {
+	return sightRange;
     }
 
     public void decreaseHitPointsBy(int initialDamage) {

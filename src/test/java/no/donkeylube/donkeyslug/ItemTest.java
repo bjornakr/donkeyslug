@@ -14,7 +14,9 @@ public class ItemTest {
     public void initialize() {
 	levelMap = LevelMapFactory.createSimpleMap(3, 3);
 	item = new Item();
-	creature = new Creature("Random guy", mock(CreatureStatistics.class));
+	CreatureStatistics creatureStatistics = mock(CreatureStatistics.class);
+	when(creatureStatistics.getHitPoints()).thenReturn(100);
+	creature = new Creature("Random guy", creatureStatistics);
     }
     
     @Test

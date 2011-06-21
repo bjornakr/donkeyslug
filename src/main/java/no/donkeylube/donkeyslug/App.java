@@ -16,20 +16,19 @@ public class App implements KeyListener {
     MainWindow mainWindow;
     Direction currentDirection;
     LevelMap levelMap;
-
+    List<Creature> enemies = new LinkedList<Creature>();
+    
     public App() {
 	levelMap = new LevelMapGenerator().generate(40, 70);
 	levelMap.addPlaceableToRandomFloorTile(player);
-	AttackableFighterCreature zergling = new AttackableFighterCreature("Zergling", new CreatureStatistics.Builder(
-		5, 5).build());
-	zergling.setBehavior(new ChaseAndAttackBehavior());
-	AttackableFighterCreature zergling2 = new AttackableFighterCreature("Zergling", new CreatureStatistics.Builder(
-		5, 5).build());
-	zergling2.setBehavior(new ChaseAndAttackBehavior());
-	levelMap.addPlaceableToRandomFloorTile(zergling);
-	levelMap.addPlaceableToRandomFloorTile(zergling2);
-	levelMap.addPlaceableToRandomFloorTile(new Item());
-//	player.createMovableMover(levelMap);
+	
+	for (int i = 0; i < 40; i++) {
+	    AttackableFighterCreature enemy = new AttackableFighterCreature("Zergling", new CreatureStatistics.Builder(
+			5, 5).build());
+	    enemy.setBehavior(new ChaseAndAttackBehavior());
+	    levelMap.addPlaceableToRandomFloorTile(enemy);
+	    enemies.add(enemy);
+	}
 	mapPainter = new LevelMapPainter(levelMap.getTiles());
 	mainWindow = new MainWindow(mapPainter);
 	mainWindow.addKeyListener(this);
@@ -39,8 +38,9 @@ public class App implements KeyListener {
 	while (true) {
 	    if (mapPainter.finishedMovingMovables() && !directionsPressed.isEmpty()) {
 		player.move(directionsPressed.peek());
-		zergling.performBehavior();
-		zergling2.performBehavior();
+		for (Creature enemy : enemies) {
+		    enemy.performBehavior();
+		}
 	    }
 
 	    mapPainter.repaint();

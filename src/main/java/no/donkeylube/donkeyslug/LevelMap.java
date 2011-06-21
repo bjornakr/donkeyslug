@@ -11,7 +11,11 @@ public class LevelMap {
 
     public void addPlaceableAt(Placeable placeable, Coordinates coordinates) {
 	if (placeable instanceof Movable) {
-	    ((Movable) placeable).createMovableMover(this);	    
+	    Movable movable = (Movable) placeable;
+	    movable.setMovableMover(new MovableMover(this, movable));
+	    movable.setPathFinder(new AStarShortestPathFinder(this, movable));
+	    
+	    
 	}
 	tiles[coordinates.getY()][coordinates.getX()].add(placeable);
     }
