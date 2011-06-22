@@ -53,16 +53,17 @@ public class TileUtils {
 	}
 	return adjacentTiles;
     }
-    
-//    public List<Tile> getAdjacentTilesWithCoordinates(Tile baseTile) {
-//	List<Tile> adjacentTiles = new LinkedList<Tile>();
-//	for (Coordinates coordinates : getAdjacentCoordinates(baseTile.getCoordinates())) {
-//	    adjacentTiles.add(new Tile(tiles[coordinates.getY()][coordinates.getY()], coordinates));
-//	}
-//	return adjacentTiles;
-//    }
-    
-    
+
+    // public List<Tile> getAdjacentTilesWithCoordinates(Tile baseTile) {
+    // List<Tile> adjacentTiles = new LinkedList<Tile>();
+    // for (Coordinates coordinates :
+    // getAdjacentCoordinates(baseTile.getCoordinates())) {
+    // adjacentTiles.add(new Tile(tiles[coordinates.getY()][coordinates.getY()],
+    // coordinates));
+    // }
+    // return adjacentTiles;
+    // }
+
     public List<Coordinates> getAdjacentCoordinates(Coordinates baseCoordinates) {
 	int x = baseCoordinates.getX();
 	int y = baseCoordinates.getY();
@@ -152,4 +153,13 @@ public class TileUtils {
 	return adjacentTiles;
     }
 
+    public List<Tile> intersectRectange(Coordinates upperLeftCoordinates, Coordinates lowerRightCoordinates) {
+	List<Tile> intersectedTiles = new LinkedList<Tile>();
+	for (int y = upperLeftCoordinates.getY(); y <= lowerRightCoordinates.getY(); y++) {
+	    for (int x = upperLeftCoordinates.getX(); x < lowerRightCoordinates.getX(); x++) {
+		intersectedTiles.add(tiles[y][x]);
+	    }
+	}
+	return intersectedTiles;
+    }
 }

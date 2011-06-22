@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
+import no.donkeylube.donkeyslug.ai.ChaseAndAttackBehavior;
 import no.donkeylube.donkeyslug.view.LevelMapPainter;
 import no.donkeylube.donkeyslug.view.MainWindow;
 
@@ -22,15 +23,16 @@ public class App implements KeyListener {
 	levelMap = new LevelMapGenerator().generate(40, 70);
 	levelMap.addPlaceableToRandomFloorTile(player);
 	
-	for (int i = 0; i < 40; i++) {
+	for (int i = 0; i < 100; i++) {
 	    AttackableFighterCreature enemy = new AttackableFighterCreature("Zergling", new CreatureStatistics.Builder(
-			5, 5).build());
+			5, 5).sightRange(4).build());
 	    enemy.setBehavior(new ChaseAndAttackBehavior());
 	    levelMap.addPlaceableToRandomFloorTile(enemy);
 	    enemies.add(enemy);
 	}
+	levelMap.addPlaceableToRandomFloorTile(new Weapon("Bastard Sword of the Craptolyffe", 300, 350));
 	mapPainter = new LevelMapPainter(levelMap.getTiles());
-	mainWindow = new MainWindow(mapPainter);
+	mainWindow = new MainWindow(mapPainter, player.getStatistics());
 	mainWindow.addKeyListener(this);
 	mainWindow.setVisible(true);
 
@@ -43,7 +45,7 @@ public class App implements KeyListener {
 		}
 	    }
 
-	    mapPainter.repaint();
+	    mainWindow.repaint();
 	    try {
 		Thread.sleep(sleepInterval);
 	    }

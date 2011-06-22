@@ -57,9 +57,9 @@ public class LevelMapPainter extends JPanel implements AttackListener {
 	int brushPosX = 0;
 	int brushPosY = 0;
 
-	int sizeRedux = BLOCKSIZE / 4;
 	for (Tile[] tileRow : tiles) {
 	    for (Tile tile : tileRow) {
+		int sizeRedux = BLOCKSIZE / 4;
 		if (tile.getItems().size() > 0) {
 		    g2.setColor(Color.ORANGE);
 		    g2.fillRect(brushPosX + sizeRedux, brushPosY + sizeRedux, BLOCKSIZE - sizeRedux*2, BLOCKSIZE - sizeRedux*2);
@@ -67,6 +67,7 @@ public class LevelMapPainter extends JPanel implements AttackListener {
 		else if (tile.getAttackable() != null && !(tile.getAttackable() instanceof Player)) {
 		    if (tile.getAttackable().isDead()) {
 			g2.setColor(Color.BLACK);
+			sizeRedux = BLOCKSIZE / 3;
 		    }
 		    else {
 			g2.setColor(Color.RED);

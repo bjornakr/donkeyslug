@@ -4,6 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
+import no.donkeylube.donkeyslug.ai.Behavior;
+import no.donkeylube.donkeyslug.ai.FieldOfVision;
+import no.donkeylube.donkeyslug.ai.PathFinder;
+
 public class Creature implements Placeable, Movable {
     private final String name;
     private final CreatureStatistics creatureStats;
@@ -11,7 +15,7 @@ public class Creature implements Placeable, Movable {
     private List<MoveListener> moveListeners = new LinkedList<MoveListener>();
     private final List<Item> backpack = new LinkedList<Item>();
     private Coordinates coordinates;
-    private List<Tile> fieldOfVision;
+    private FieldOfVision fieldOfVision;
     private Behavior behavior;
     private PathFinder pathFinder;
     
@@ -114,26 +118,30 @@ public class Creature implements Placeable, Movable {
 	}
     }
     
-    public void setFieldOfVision(List<Tile> tiles) {
-	fieldOfVision = tiles;
+    public void setFieldOfVision(FieldOfVision fieldOfVision) {
+	this.fieldOfVision = fieldOfVision;
     }
     
-    public List<Attackable> attackablesInFieldOfVision() {
-	List<Attackable> attackables = new LinkedList<Attackable>();
-	for (Tile tile : fieldOfVision) {
-	    Attackable attackable = tile.getAttackable();
-	    if (attackable != null && !attackable.equals(this) && !attackable.isDead()) {
-		attackables.add(attackable);
-	    }
-	}
-	return attackables;
+    public List<Attackable> liveAttackablesInFieldOfVision() {
+	return fieldOfVision.liveAttackables();
+//	List<Attackable> attackables = new LinkedList<Attackable>();
+//	for (Tile tile : fieldOfVision) {
+//	    Attackable attackable = tile.getAttackable();
+//	    if (attackable != null && !attackable.equals(this) && !attackable.isDead()) {
+//		attackables.add(attackable);
+//	    }
+//	}
+//	return attackables;
     }
 
-    public void moveTowards(Coordinates targetCoordinates) {	
+    public void moveTowards(Coordinates targetCoordinates) {
+	if (coordinates.equals(targetCoordinates)) {
+	    return;
+	}
 	Stack<Tile> shortestPath = pathFinder.findShortestPathTo(targetCoordinates);
 	Tile destinationTile = shortestPath.pop();
 	movableMover.move(destinationTile);
-	// no movelistener
+	// TODO: no movelistener
     }
 
     @Override
@@ -142,6 +150,6 @@ public class Creature implements Placeable, Movable {
     }
 
     public boolean sees(Placeable placeable) {
-	return false;
+	return fieldOfVision.contains(placeable);
     }
 }

@@ -39,4 +39,22 @@ public class Coordinates {
 	int yHash = yInteger.hashCode();	
 	return xHash^yHash;
     }
+
+    public static Coordinates getInstanceWithCutoffs(int x, int y, int height, int width) {
+	x = cutoff(x, width-1);
+	y = cutoff(y, height-1);
+	return new Coordinates(x, y);
+    }
+    
+    private static int cutoff(int value, int max) {
+	if (value < 0) {
+	    return 0;
+	}
+	else if (value > max) {
+	    return max;
+	}
+	else {
+	    return value;
+	}
+    }
 }

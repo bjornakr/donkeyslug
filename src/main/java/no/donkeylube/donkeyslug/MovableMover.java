@@ -10,8 +10,8 @@ public class MovableMover {
     public MovableMover(LevelMap levelMap, Movable movable) {
 	this.levelMap = levelMap;
 	this.movable = movable;
-	TileUtils tileUtils = new TileUtils(levelMap.getTiles());
-	this.movable.setFieldOfVision(tileUtils.allTiles());
+//	TileUtils tileUtils = new TileUtils(levelMap.getTiles());
+//	this.movable.setFieldOfVision(tileUtils.allTiles());
     }
 
     // TODO: Major refactoring

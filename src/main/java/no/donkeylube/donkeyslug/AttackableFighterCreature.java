@@ -9,7 +9,6 @@ public class AttackableFighterCreature extends Creature implements Attackable, F
     private Weapon weapon;
     private List<AttackListener> attackListeners = new LinkedList<AttackListener>();
 
-    
     public AttackableFighterCreature(String name, CreatureStatistics creatureStats) {
 	super(name, creatureStats);
 	this.name = name;
@@ -25,7 +24,7 @@ public class AttackableFighterCreature extends Creature implements Attackable, F
 	    opponent.takeDamage(battleCalculator.determineDamage());
 	}
 	else {
-	    notifyMissToReporter();	    
+	    notifyMissToReporter();
 	}
 	notifyAttackListeners(null);
     }
@@ -47,7 +46,7 @@ public class AttackableFighterCreature extends Creature implements Attackable, F
     }
 
     @Override
-    public void equipWeapon(Weapon weapon) {	
+    public void equipWeapon(Weapon weapon) {
 	this.weapon = weapon;
 	GameReporter.getInstance().offer(name + " equips " + weapon.getName());
     }
@@ -65,13 +64,21 @@ public class AttackableFighterCreature extends Creature implements Attackable, F
 
     @Override
     public void addAttackListener(AttackListener attackListener) {
-	attackListeners.add(attackListener);	
+	attackListeners.add(attackListener);
     }
 
     @Override
     public void notifyAttackListeners(AttackReport attackReport) {
 	for (AttackListener attackListener : attackListeners) {
 	    attackListener.attackPerformed(attackReport);
-	}	
+	}
+    }
+
+    public void pickUp(Item item, Tile tile) {
+	super.pickUp(item, tile);
+	if (item instanceof Weapon) {
+	    equipWeapon((Weapon) item);
+	    System.out.println("Weapon equipped");
+	}
     }
 }

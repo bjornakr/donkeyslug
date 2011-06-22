@@ -1,6 +1,6 @@
 package no.donkeylube.donkeyslug;
 
-public class Weapon {
+public class Weapon extends Item {
     private final String name;
     private final int minDamage;
     private final int maxDamage;

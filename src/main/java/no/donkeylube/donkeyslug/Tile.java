@@ -88,4 +88,8 @@ public class Tile {
     public Coordinates coordinates() {
 	return coordinates;
     }
+
+    public List<Placeable> getPlaceables() {
+	return content;	
+    }
 }

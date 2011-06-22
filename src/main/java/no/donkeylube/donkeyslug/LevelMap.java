@@ -1,5 +1,8 @@
 package no.donkeylube.donkeyslug;
 
+import no.donkeylube.donkeyslug.ai.AStarShortestPathFinder;
+import no.donkeylube.donkeyslug.ai.FieldOfVision;
+
 public class LevelMap {
     private final Tile[][] tiles;
     private final TileUtils tileUtils;
@@ -14,8 +17,10 @@ public class LevelMap {
 	    Movable movable = (Movable) placeable;
 	    movable.setMovableMover(new MovableMover(this, movable));
 	    movable.setPathFinder(new AStarShortestPathFinder(this, movable));
-	    
-	    
+	}
+	if (placeable instanceof Creature) {
+	    Creature creature = (Creature) placeable;
+	    creature.setFieldOfVision(new FieldOfVision(this, creature));
 	}
 	tiles[coordinates.getY()][coordinates.getX()].add(placeable);
     }
