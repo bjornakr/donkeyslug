@@ -1,5 +1,7 @@
 package no.donkeylube.donkeyslug;
 
+import no.donkeylube.donkeyslug.items.Weapon;
+
 public interface Fighter {
     public void attack(Attackable attackable);
     public void equipWeapon(Weapon weapon);

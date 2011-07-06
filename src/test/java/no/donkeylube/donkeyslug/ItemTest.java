@@ -1,5 +1,7 @@
 package no.donkeylube.donkeyslug;
 
+import no.donkeylube.donkeyslug.items.Item;
+
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -13,7 +15,7 @@ public class ItemTest {
     @Before
     public void initialize() {
 	levelMap = LevelMapFactory.createSimpleMap(3, 3);
-	item = new Item();
+	item = mock(Item.class);
 	CreatureStatistics creatureStatistics = mock(CreatureStatistics.class);
 	when(creatureStatistics.getHitPoints()).thenReturn(100);
 	creature = new Creature("Random guy", creatureStatistics);
@@ -54,11 +56,11 @@ public class ItemTest {
     
     @Test(expected=RuntimeException.class)
     public void pickingUpItemNotOnFloorShouldRaiseException() {
-	creature.pickUp(new Item(), new Tile(Tile.Type.FLOOR, mock(Coordinates.class)));
+	creature.pickUp(item, new Tile(Tile.Type.FLOOR, mock(Coordinates.class)));
     }
 
     @Test(expected=RuntimeException.class)
     public void droppingItemNotInBackpackShouldRaiseException() {
-	creature.drop(new Item(), new Tile(Tile.Type.FLOOR, mock(Coordinates.class)));
+	creature.drop(item, new Tile(Tile.Type.FLOOR, mock(Coordinates.class)));
     }
 }

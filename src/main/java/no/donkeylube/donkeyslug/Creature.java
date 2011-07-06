@@ -7,6 +7,9 @@ import java.util.Stack;
 import no.donkeylube.donkeyslug.ai.Behavior;
 import no.donkeylube.donkeyslug.ai.FieldOfVision;
 import no.donkeylube.donkeyslug.ai.PathFinder;
+import no.donkeylube.donkeyslug.items.Consumable;
+import no.donkeylube.donkeyslug.items.Ingredient;
+import no.donkeylube.donkeyslug.items.Item;
 
 public class Creature implements Placeable, Movable {
     private final String name;
@@ -124,14 +127,6 @@ public class Creature implements Placeable, Movable {
     
     public List<Attackable> liveAttackablesInFieldOfVision() {
 	return fieldOfVision.liveAttackables();
-//	List<Attackable> attackables = new LinkedList<Attackable>();
-//	for (Tile tile : fieldOfVision) {
-//	    Attackable attackable = tile.getAttackable();
-//	    if (attackable != null && !attackable.equals(this) && !attackable.isDead()) {
-//		attackables.add(attackable);
-//	    }
-//	}
-//	return attackables;
     }
 
     public void moveTowards(Coordinates targetCoordinates) {
@@ -151,5 +146,21 @@ public class Creature implements Placeable, Movable {
 
     public boolean sees(Placeable placeable) {
 	return fieldOfVision.contains(placeable);
+    }
+
+    public Consumable alchemize(List<Ingredient> ingredientsForHealthPotion, Recipe recipe) {
+	for (Ingredient ingredient : ingredientsForHealthPotion) {
+	    if (!backpack.contains(ingredient)) {
+		throw new IllegalArgumentException("Player does not carry ingredient \"" + ingredient + "\".");
+	    }
+	    backpack.remove(ingredient);
+	}
+	Consumable product = new Consumable(recipe.name(), recipe.consumationEffect());
+	backpack.add(product);
+	return product;
+    }
+
+    public void consume(Consumable consumable) {
+	consumable.consume(creatureStats);
     }
 }

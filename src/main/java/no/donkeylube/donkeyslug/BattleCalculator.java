@@ -2,6 +2,8 @@ package no.donkeylube.donkeyslug;
 
 import java.util.Random;
 
+import no.donkeylube.donkeyslug.items.Weapon;
+
 public class BattleCalculator {
     private final Fighter attacker;
     private final Attackable defender;

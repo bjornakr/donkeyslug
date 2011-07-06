@@ -94,11 +94,55 @@ else if (rand >= 0.75 && zapp > 0) return zapp(initial+1);
 else return initial;
 
 
+How about item distribution?
+
+Potential algorithm:
+1. For all squares, determine item drop by global random drop ratio.
+2. Create a randomized ring buffer of every droppable item.
+3. For every item, compare a random R (0-1) against the items chance of drop (COD).
+4. If R is lower or equal to the item's COD, put the item in the square, and repeat from 1.
+5. If not, repeat from 3
+
+NO! I don't like that. If there are two available swords and 40 000 herbs, the chance of a sword drop is minuscule.
+Do we need to introduce a "commonness" variable?
+sword drop: RARE
+armor drop: RARE
+herb drop: COMMON
+
+Then we need to define item types as well... Bollocks... Well, we have one already.
+interface or abstract class: Item
+* Equippable
+  - Weapon
+  - Armor (apparel?)
+* Consumable
+  - Herbs and mushrooms - can be combined with other herbs to make potions
+  - Potion - combine potions?
+* Money? Do we need money? That means vendors.. *sigh*
+* Useless items? Why?
+* Quest items. Orbs and Amulets and Whatever
+ 
+
+On items.
+
+Equipables.
+Weapons can be equipped, but only one at the time.
+Several pieces of apparel and armor can be equipped at the same time, but only once per body part. There are hats/helmets,
+chest armor, leggings, boots, gloves and amulets. One can equip two rings.
 
 
 
 
 
+
+
+
+Tittel(?):
+Harry Flux & The Deathball Matrix
+Harry Flux & The Flying x-axis from Hell
+Harry Flux - The Repulsive Quest
+The Astonishing Harry Flux goes adventuring
+The Multifarious Harry Flux goes Dungeon Crawling
+Harry Flux & The Flying Flesh Slug From the Fire Fraternity
 
 
 

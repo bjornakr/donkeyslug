@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import no.donkeylube.donkeyslug.items.Weapon;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -68,7 +69,7 @@ public class LevelMapTest {
     
     @Test
     public void testPlaceableShouldHaveCoordinatesAfterBeingPlacedOnMap() {
-	Placeable placeable = new Item();
+	Placeable placeable = new Weapon("Sword");
 //	when(placeable.setCoordinates(any())).then
 	levelMap.addPlaceableAt(placeable, new Coordinates(1, 1));
 	assertEquals(new Coordinates(1, 1), placeable.getCoordinates());

@@ -3,6 +3,8 @@ package no.donkeylube.donkeyslug;
 import java.util.LinkedList;
 import java.util.List;
 
+import no.donkeylube.donkeyslug.items.Item;
+
 public class Tile {
     public enum Type {
 	WALL, FLOOR
@@ -46,7 +48,7 @@ public class Tile {
 
     public synchronized Attackable getAttackable() {
 	for (Placeable placeable : content) {
-	    if (placeable instanceof Attackable) {
+	    if (placeable instanceof Attackable && !((Attackable) placeable).isDead()) {
 		return (Attackable) placeable;
 	    }
 	}

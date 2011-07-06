@@ -58,7 +58,11 @@ public class CreatureStatistics {
 	return sightRange;
     }
 
-    public void decreaseHitPointsBy(int initialDamage) {
-	hitPoints -= initialDamage;
+    public void decreaseHitPointsBy(int value) {
+	hitPoints -= value;
+    }
+    
+    public void increaseHitPointsBy(int value) {
+	hitPoints += value;
     }
 }

@@ -2,6 +2,7 @@ package no.donkeylube.donkeyslug;
 
 import static org.mockito.Mockito.mock;
 import no.donkeylube.donkeyslug.Tile.Type;
+import no.donkeylube.donkeyslug.items.Item;
 
 import org.junit.Test;
 import static org.junit.Assert.*;

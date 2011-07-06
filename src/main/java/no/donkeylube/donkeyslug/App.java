@@ -7,20 +7,22 @@ import java.util.List;
 import java.util.Stack;
 
 import no.donkeylube.donkeyslug.ai.ChaseAndAttackBehavior;
+import no.donkeylube.donkeyslug.items.Consumable;
+import no.donkeylube.donkeyslug.items.Item;
+import no.donkeylube.donkeyslug.items.Weapon;
 import no.donkeylube.donkeyslug.view.LevelMapPainter;
 import no.donkeylube.donkeyslug.view.MainWindow;
 
 public class App implements KeyListener {
-    Player player = new Player("Doodlestick", new CreatureStatistics.Builder(10, 10).build());
-    Stack<Direction> directionsPressed = new Stack<Direction>();
-    LevelMapPainter mapPainter;
-    MainWindow mainWindow;
-    Direction currentDirection;
-    LevelMap levelMap;
-    List<Creature> enemies = new LinkedList<Creature>();
+    private Player player = new Player("Doodlestick", new CreatureStatistics.Builder(10, 10).build());
+    private Stack<Direction> directionsPressed = new Stack<Direction>();
+    private LevelMapPainter mapPainter;
+    private MainWindow mainWindow;
+    private LevelMap levelMap;
+    private List<Creature> enemies = new LinkedList<Creature>();
     
     public App() {
-	levelMap = new LevelMapGenerator().generate(40, 70);
+	levelMap = new LevelMapGenerator().generate(50, 70);
 	levelMap.addPlaceableToRandomFloorTile(player);
 	
 	for (int i = 0; i < 100; i++) {
@@ -30,7 +32,19 @@ public class App implements KeyListener {
 	    levelMap.addPlaceableToRandomFloorTile(enemy);
 	    enemies.add(enemy);
 	}
-	levelMap.addPlaceableToRandomFloorTile(new Weapon("Bastard Sword of the Craptolyffe", 300, 350));
+	Weapon weapon = new Weapon("Bastard Sword of the Craptolyffe");
+//	weapon.setName("Bastard Sword of the Craptolyffe");
+	weapon.setType(Weapon.Type.SLASHING);
+	weapon.setMinDamage(20);
+	weapon.setMaxDamage(30);
+	weapon.setChanceOfCritical(0.4);
+	weapon.setCriticalModifier(2);
+	levelMap.addPlaceableToRandomFloorTile(weapon);
+	
+	for (int i = 0; i < 5; i++) {
+	    levelMap.addPlaceableToRandomFloorTile(new Consumable("Health potion", ConsumationEffectFactory.createModifyHealthEffect(20)));
+	}
+	
 	mapPainter = new LevelMapPainter(levelMap.getTiles());
 	mainWindow = new MainWindow(mapPainter, player.getStatistics());
 	mainWindow.addKeyListener(this);

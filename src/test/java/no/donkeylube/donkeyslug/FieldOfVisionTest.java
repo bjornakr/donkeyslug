@@ -1,8 +1,11 @@
 package no.donkeylube.donkeyslug;
 
+import no.donkeylube.donkeyslug.items.Item;
+
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class FieldOfVisionTest {
     private Creature creature;
@@ -14,7 +17,7 @@ public class FieldOfVisionTest {
 	CreatureStatistics creatureStats = new CreatureStatistics.Builder(10, 10).sightRange(5).build();
 	creature = new Creature("Half-blind rat", creatureStats);
 	levelMap = LevelMapFactory.createSimpleMap(10, 10);
-	item = new Item();
+	item = mock(Item.class);
 	
     }
     

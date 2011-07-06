@@ -19,19 +19,24 @@ CURRENT GOAL(S)
   - aggro
   - call swarm
   - attack enemy monsters
-
-FUTURE
-------
 * System for importing Items and Creatures, taking it out of the code.
   - Maybe <del>JSON</del> YAML is suited for this?
-* Interaction with items
+* Weapon and armor system
+  
+FUTURE
+------
+* Improved monster AI
+  - Different behaviors (run away, search for player, patrol, sleep, random walk, et.c.)
+  - Knowledge about other creatures - who are friends and enemies
+  - Improved FOV
+  - Call swarm
 * Leveling and scaling
 * Ranged combat
-* Alchemy
 * Traps
 * Cooler, player-centric view with minimap for play testing
 * Moving to new levels
 * More algorithms for level generation
+* Timed stat changes (buffs, poison, et.c.)
 
 COMPLETED
 ---------
@@ -40,4 +45,10 @@ COMPLETED
 * Simple parsing of hand made ascii maps
 * Level generator (square rooms, digs random tunnels until all rooms are connected) 
 * Preliminary battle algorithm
-* Creatures can find their way out of a paper bag - and find the shortest path to whatever they are pursuing
+* Basic monster AI
+  - Creatures can find their way out of a paper bag - and find the shortest path to whatever they are pursuing
+  - Creatures have a crude FOV (just a square emanating from a creature, ignores walls)
+  - Creatures will charge at the first creature they see
+* Creatures can pick up and drop items
+* Creatures can consume edibles, which in turn can affect their stats
+* Creatures can use recipes to combine ingredients into something edible and stat-changing (health potions, cake of dexterity, ++)

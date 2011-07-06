@@ -3,6 +3,10 @@ package no.donkeylube.donkeyslug;
 import java.util.LinkedList;
 import java.util.List;
 
+import no.donkeylube.donkeyslug.items.Consumable;
+import no.donkeylube.donkeyslug.items.Item;
+import no.donkeylube.donkeyslug.items.Weapon;
+
 public class AttackableFighterCreature extends Creature implements Attackable, Fighter {
     private final CreatureStatistics myStats;
     private final String name;
@@ -13,7 +17,13 @@ public class AttackableFighterCreature extends Creature implements Attackable, F
 	super(name, creatureStats);
 	this.name = name;
 	myStats = creatureStats;
-	weapon = new Weapon("Bare hands", 3, 5);
+	weapon = new Weapon("Bare hands");
+//	weapon.setName("Bare hands");
+	weapon.setChanceOfCritical(0.1);
+	weapon.setCriticalModifier(2);
+	weapon.setType(Weapon.Type.BLUNT);
+	weapon.setMinDamage(4);
+	weapon.setMaxDamage(6);
     }
 
     @Override
@@ -35,7 +45,7 @@ public class AttackableFighterCreature extends Creature implements Attackable, F
 
     private void notifyAttackToReporter(Attackable opponent) {
 	GameReporter.getInstance().offer(name + " attacks " + opponent.getName() +
-		" with " + weapon.getName().toLowerCase() + ".");
+		" with " + weapon.name().toLowerCase() + ".");
     }
 
     @Override
@@ -48,7 +58,7 @@ public class AttackableFighterCreature extends Creature implements Attackable, F
     @Override
     public void equipWeapon(Weapon weapon) {
 	this.weapon = weapon;
-	GameReporter.getInstance().offer(name + " equips " + weapon.getName());
+	GameReporter.getInstance().offer(name + " equips " + weapon.name());
     }
 
     @Override
@@ -79,6 +89,10 @@ public class AttackableFighterCreature extends Creature implements Attackable, F
 	if (item instanceof Weapon) {
 	    equipWeapon((Weapon) item);
 	    System.out.println("Weapon equipped");
+	}
+	else if (item instanceof Consumable) {
+	    consume((Consumable) item);
+	    System.out.println("Quaffed something");
 	}
     }
 }
