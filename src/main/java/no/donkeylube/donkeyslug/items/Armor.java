@@ -1,12 +1,22 @@
 package no.donkeylube.donkeyslug.items;
 
 public class Armor extends Item {
-
-    public Armor(String name) {
+    public enum Type {HEAD, TORSO, HANDS, FEET, SHIELD, BODY}
+    
+    private Type type;
+    private int defensiveValue;
+    
+    public Armor(String name, Type type, int defensiveValue) {
 	super(name);
+	this.type = type;
+	this.defensiveValue = defensiveValue;
     }
 
-    public int getDefenseValue() {
-	return 2;
+    public int defensiveValue() {
+	return defensiveValue;
     }
+
+    public Type type() {
+	return type;
+    }    
 }

@@ -4,8 +4,10 @@ import static no.donkeylube.donkeyslug.Tile.Type.FLOOR;
 import static no.donkeylube.donkeyslug.Tile.Type.WALL;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public class TileUtils {
     private final Tile[][] tiles;
@@ -161,5 +163,40 @@ public class TileUtils {
 	    }
 	}
 	return intersectedTiles;
+    }
+    
+    public void fillRectangle(Tile.Type type, Coordinates startCoordinates, Coordinates endCoordinates) {
+	for (int y = startCoordinates.getY(); y < endCoordinates.getY(); y++) {
+	    for (int x = startCoordinates.getX(); x < endCoordinates.getX(); x++) {
+		tiles[y][x] = new Tile(type, new Coordinates(x, y));
+	    }
+	}
+    }
+
+    public List<Tile> getDiagonallyAdjacentTilesFor(Tile baseTile) {
+	List<Tile> diagonallyAdjacentTiles = new LinkedList<Tile>();
+	for (Coordinates coordinates : getDiagonallyAdjacentCoordinatesFor(baseTile.coordinates())) {
+	    diagonallyAdjacentTiles.add(tiles[coordinates.getY()][coordinates.getX()]);
+	}
+	return diagonallyAdjacentTiles;
+    }
+
+    private Set<Coordinates> getDiagonallyAdjacentCoordinatesFor(Coordinates baseCoordinates) {
+	int baseX = baseCoordinates.getX();
+	int baseY = baseCoordinates.getY();
+	Set<Coordinates> diagonallyAdjacentCoordinates = new HashSet<Coordinates>();
+	diagonallyAdjacentCoordinates.add(new Coordinates(baseX-1, baseY-1));
+	diagonallyAdjacentCoordinates.add(new Coordinates(baseX+1, baseY-1));
+	diagonallyAdjacentCoordinates.add(new Coordinates(baseX-1, baseY+1));
+	diagonallyAdjacentCoordinates.add(new Coordinates(baseX+1, baseY+1));
+	Set<Coordinates> outOfBoundsCoordinates = new HashSet<Coordinates>();
+	for (Coordinates coordinates : diagonallyAdjacentCoordinates) {
+	    if (coordinates.getX() < 0 || coordinates.getX() > tiles[0].length - 1
+		    || coordinates.getY() < 0 || coordinates.getY() > tiles.length - 1) {
+		outOfBoundsCoordinates.add(coordinates);
+	    }
+	}
+	diagonallyAdjacentCoordinates.removeAll(outOfBoundsCoordinates);
+	return diagonallyAdjacentCoordinates;
     }
 }

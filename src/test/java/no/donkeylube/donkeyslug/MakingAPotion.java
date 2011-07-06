@@ -26,6 +26,7 @@ public class MakingAPotion {
 	Consumable healthPotion = alchemist.alchemize(ingredientsForHealthPotion(), createHealthPotionRecipe());
 	alchemist.consume(healthPotion);
 	assertEquals(125, alchemist.getStatistics().getHitPoints());
+	assertFalse("Consumed potion removed from inventory", alchemist.hasItem(healthPotion));
     }
 
     

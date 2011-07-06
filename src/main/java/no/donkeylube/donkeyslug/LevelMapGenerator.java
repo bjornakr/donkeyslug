@@ -19,7 +19,7 @@ public class LevelMapGenerator {
 
     public LevelMap generate(int height, int width) {
 	initializeTilesAndTileUtils(height, width);
-	fillRectangle(WALL, new Coordinates(0, 0), new Coordinates(width, height));
+	tileUtils.fillRectangle(WALL, new Coordinates(0, 0), new Coordinates(width, height));
 	createRooms(20, 8);
 
 	while (!tileUtils.allFloorTilesAreAccessible()) {
@@ -92,7 +92,7 @@ public class LevelMapGenerator {
 	Coordinates roomEndCoordinates = new Coordinates(roomStartCoordinates.getX() + roomWidth,
 		roomStartCoordinates.getY() + roomHeight);
 	if (!collission(roomStartCoordinates, roomEndCoordinates)) {
-	    fillRectangle(Tile.Type.FLOOR, roomStartCoordinates, roomEndCoordinates);
+	    tileUtils.fillRectangle(Tile.Type.FLOOR, roomStartCoordinates, roomEndCoordinates);
 	}
 	else {
 	    if (noOfIterations % 1000000 == 0) {
@@ -131,11 +131,11 @@ public class LevelMapGenerator {
 	}
     }
     
-    private void fillRectangle(Tile.Type type, Coordinates startCoordinates, Coordinates endCoordinates) {
-	for (int y = startCoordinates.getY(); y < endCoordinates.getY(); y++) {
-	    for (int x = startCoordinates.getX(); x < endCoordinates.getX(); x++) {
-		tiles[y][x] = new Tile(type, new Coordinates(x, y));
-	    }
-	}
-    }
+//    private void fillRectangle(Tile.Type type, Coordinates startCoordinates, Coordinates endCoordinates) {
+//	for (int y = startCoordinates.getY(); y < endCoordinates.getY(); y++) {
+//	    for (int x = startCoordinates.getX(); x < endCoordinates.getX(); x++) {
+//		tiles[y][x] = new Tile(type, new Coordinates(x, y));
+//	    }
+//	}
+//    }
 }

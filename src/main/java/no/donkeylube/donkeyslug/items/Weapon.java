@@ -4,7 +4,7 @@ package no.donkeylube.donkeyslug.items;
 public class Weapon extends Item {
     public enum Type {SLASHING, PIERCING, BLUNT};
     
-    private String name;
+//    private String name;
     private Type type;
     private int minDamage;
     private int maxDamage;
@@ -64,7 +64,7 @@ public class Weapon extends Item {
     }
     
     public String toString() {
-	return "name = " + name + "\n" +
+	return "name = " + name() + "\n" +
 	"type = " + type + "\n";	
     }
 }

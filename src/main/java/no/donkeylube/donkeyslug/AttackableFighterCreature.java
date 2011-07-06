@@ -1,8 +1,10 @@
 package no.donkeylube.donkeyslug;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import no.donkeylube.donkeyslug.items.Armor;
 import no.donkeylube.donkeyslug.items.Consumable;
 import no.donkeylube.donkeyslug.items.Item;
 import no.donkeylube.donkeyslug.items.Weapon;
@@ -12,7 +14,8 @@ public class AttackableFighterCreature extends Creature implements Attackable, F
     private final String name;
     private Weapon weapon;
     private List<AttackListener> attackListeners = new LinkedList<AttackListener>();
-
+    private HashMap<Armor.Type, Armor> equippedArmor = new HashMap<Armor.Type, Armor>();
+    
     public AttackableFighterCreature(String name, CreatureStatistics creatureStats) {
 	super(name, creatureStats);
 	this.name = name;
@@ -62,9 +65,17 @@ public class AttackableFighterCreature extends Creature implements Attackable, F
     }
 
     @Override
-    public int getAccumulatedDefensiveValueOfArmor() {
-	// TODO Auto-generated method stub
-	return 1;
+    public void equipArmor(Armor armorItem) {
+	equippedArmor.put(armorItem.type(), armorItem);
+    }
+    
+    @Override
+    public int accumulativeDefensiveValueOfArmor() {
+	int accumulatedDefensiveValueOfArmor = 0;
+	for (Armor armorItem : equippedArmor.values()) {
+	    accumulatedDefensiveValueOfArmor += armorItem.defensiveValue();
+	}
+	return accumulatedDefensiveValueOfArmor;
     }
 
     @Override

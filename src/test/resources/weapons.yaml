@@ -1,25 +1,25 @@
----
-name: katana
+--- !no.donkeylube.donkeyslug.items.Weapon [ katana ]
+#name: katana
 type: SLASHING
 minDamage: 8
 maxDamage: 10
 chanceOfCritical: 0.05
 criticalModifier: 4.0
----  
+--- [ short sword ]
 name: short sword
 type: SLASHING
 minDamage: 8
 maxDamage: 12
 chanceOfCritical: 0.1
 criticalModifier: 1.5
----
+--- [ mace ]
 name: mace
 type: BLUNT
 minDamage: 9
 maxDamage: 11
 chanceOfCritical: 0.1
 criticalModifier: 2
----
+--- [ morningstar ]
 name: morningstar
 type: BLUNT
 minDamage: 7

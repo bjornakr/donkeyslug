@@ -22,12 +22,13 @@ public class App implements KeyListener {
     private List<Creature> enemies = new LinkedList<Creature>();
     
     public App() {
-	levelMap = new LevelMapGenerator().generate(50, 70);
+//	levelMap = new LevelMapGenerator().generate(50, 70);
+	levelMap = new MazeGenerator().generate(50, 60);
 	levelMap.addPlaceableToRandomFloorTile(player);
 	
-	for (int i = 0; i < 100; i++) {
+	for (int i = 0; i < 1; i++) {
 	    AttackableFighterCreature enemy = new AttackableFighterCreature("Zergling", new CreatureStatistics.Builder(
-			5, 5).sightRange(4).build());
+			5, 5).sightRange(1000).build());
 	    enemy.setBehavior(new ChaseAndAttackBehavior());
 	    levelMap.addPlaceableToRandomFloorTile(enemy);
 	    enemies.add(enemy);

@@ -162,5 +162,6 @@ public class Creature implements Placeable, Movable {
 
     public void consume(Consumable consumable) {
 	consumable.consume(creatureStats);
+	backpack.remove(consumable);
     }
 }

@@ -37,6 +37,7 @@ FUTURE
 * Moving to new levels
 * More algorithms for level generation
 * Timed stat changes (buffs, poison, et.c.)
+* Fog-of-war
 
 COMPLETED
 ---------

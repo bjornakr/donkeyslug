@@ -30,7 +30,7 @@ public class BattleCalculator {
 	int weaponDamage = attackersWeapon.getMinDamage() + damageAboveMinimum;
 	int attackersStrength = attacker.getStatistics().getStrength();
 	int attackDamage = weaponDamage + (attackersStrength/3);
-	int totalDamage = attackDamage - defender.getAccumulatedDefensiveValueOfArmor();
+	int totalDamage = attackDamage - defender.accumulativeDefensiveValueOfArmor();
 	if (totalDamage < 0) {
 	    totalDamage = 0;
 	}

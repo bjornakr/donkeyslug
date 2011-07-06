@@ -30,7 +30,7 @@ public class ParseYAMLTest {
 	}
 	for (Object waffen : o) {
 	    assertTrue(waffen instanceof Weapon);
-	    System.out.println((Weapon)waffen);	    
+//	    System.out.println((Weapon)waffen);	    
 	}
     }
 }

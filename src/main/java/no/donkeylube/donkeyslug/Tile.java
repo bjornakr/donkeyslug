@@ -10,7 +10,7 @@ public class Tile {
 	WALL, FLOOR
     };
 
-    private final Type type;
+    private Type type;
     private final LinkedList<Placeable> content = new LinkedList<Placeable>();
     private final Coordinates coordinates;
 
@@ -25,6 +25,10 @@ public class Tile {
 
     public boolean isFloor() {
 	return type == Type.FLOOR;
+    }
+    
+    public void changeTypeTo(Type type) {
+	this.type = type;
     }
 
     public Type type() {
