@@ -14,17 +14,13 @@ procured from the various literature I've been reading. :)
 
 CURRENT GOAL(S)
 ---------------
-* Monster AI
-  - movement (run away, search for player, patrol, sleep, ...)
-  - aggro
-  - call swarm
-  - attack enemy monsters
 * System for importing Items and Creatures, taking it out of the code.
   - Maybe <del>JSON</del> YAML is suited for this?
 * Weapon and armor system
   
 FUTURE
 ------
+* Allow player to access and interact with inventory
 * Improved monster AI
   - Different behaviors (run away, search for player, patrol, sleep, random walk, et.c.)
   - Knowledge about other creatures - who are friends and enemies
@@ -38,6 +34,7 @@ FUTURE
 * More algorithms for level generation
 * Timed stat changes (buffs, poison, et.c.)
 * Fog-of-war
+* Turn based or realtime? Decide.
 
 COMPLETED
 ---------

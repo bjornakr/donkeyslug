@@ -9,4 +9,5 @@ public interface Fighter {
     public Weapon getWeapon();
     public void addAttackListener(AttackListener attackListener);
     public void notifyAttackListeners(AttackReport attackReport);
+    public boolean isDead();
 }

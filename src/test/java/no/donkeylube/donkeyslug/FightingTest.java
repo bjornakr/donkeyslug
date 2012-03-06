@@ -1,10 +1,8 @@
 package no.donkeylube.donkeyslug;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-
-import no.donkeylube.donkeyslug.items.Weapon;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -34,30 +32,6 @@ public class FightingTest {
 	assert(trainingDummy.isDead());
     }
     
-    @SuppressWarnings("unchecked")
-    @Test
-    public void testFightReport() {
-	GameReporter gameReporter = GameReporter.getInstance();
-	gameReporter.clear();
-	player.attack(trainingDummy);
-	assertThat(gameReporter, hasItem("Player attacks Training dummy with bare hands."));
-	assertThat(gameReporter, anyOf(hasItem(containsString("Training dummy takes")),
-			hasItem(containsString("Player misses."))));
-	player.equipWeapon(createSword());
-	player.attack(trainingDummy);
-	assertThat(gameReporter, hasItem("Player attacks Training dummy with sword."));
-    }
-    
-    private Weapon createSword() {
-	Weapon sword = new Weapon("Sword");
-	sword.setType(Weapon.Type.SLASHING);
-	sword.setMinDamage(10);
-	sword.setMaxDamage(15);
-	sword.setChanceOfCritical(0.1);
-	sword.setCriticalModifier(2);
-	return sword;
-    }
-
     @Test
     public void playerShouldFightsEnemyWhenTryingToMoveToItsLocation() {
 	LevelMap levelMap = LevelMapFactory.createSimpleMap(3, 4);

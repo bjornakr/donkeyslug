@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Stack;
 
 import no.donkeylube.donkeyslug.ai.ChaseAndAttackBehavior;
+import no.donkeylube.donkeyslug.items.Armor;
 import no.donkeylube.donkeyslug.items.Consumable;
 import no.donkeylube.donkeyslug.items.Item;
 import no.donkeylube.donkeyslug.items.Weapon;
@@ -22,25 +23,21 @@ public class App implements KeyListener {
     private List<Creature> enemies = new LinkedList<Creature>();
     
     public App() {
-//	levelMap = new LevelMapGenerator().generate(50, 70);
+//	levelMap = new LevelMapGenerator().generate(50, 60);
 	levelMap = new MazeGenerator().generate(50, 60);
 	levelMap.addPlaceableToRandomFloorTile(player);
 	
-	for (int i = 0; i < 1; i++) {
+	for (int i = 0; i < 50; i++) {
 	    AttackableFighterCreature enemy = new AttackableFighterCreature("Zergling", new CreatureStatistics.Builder(
 			5, 5).sightRange(1000).build());
 	    enemy.setBehavior(new ChaseAndAttackBehavior());
 	    levelMap.addPlaceableToRandomFloorTile(enemy);
 	    enemies.add(enemy);
 	}
-	Weapon weapon = new Weapon("Bastard Sword of the Craptolyffe");
-//	weapon.setName("Bastard Sword of the Craptolyffe");
-	weapon.setType(Weapon.Type.SLASHING);
-	weapon.setMinDamage(20);
-	weapon.setMaxDamage(30);
-	weapon.setChanceOfCritical(0.4);
-	weapon.setCriticalModifier(2);
-	levelMap.addPlaceableToRandomFloorTile(weapon);
+	levelMap.addPlaceableToRandomFloorTile(createWeapon());
+	
+	Armor chestPlate = new Armor("Chest plate", Armor.Type.TORSO, 7);
+	levelMap.addPlaceableToRandomFloorTile(chestPlate);
 	
 	for (int i = 0; i < 5; i++) {
 	    levelMap.addPlaceableToRandomFloorTile(new Consumable("Health potion", ConsumationEffectFactory.createModifyHealthEffect(20)));
@@ -59,7 +56,6 @@ public class App implements KeyListener {
 		    enemy.performBehavior();
 		}
 	    }
-
 	    mainWindow.repaint();
 	    try {
 		Thread.sleep(sleepInterval);
@@ -68,6 +64,16 @@ public class App implements KeyListener {
 		e.printStackTrace();
 	    }
 	}
+    }
+
+    private Placeable createWeapon() {
+	Weapon weapon = new Weapon("Bastard Sword of the Craptolyffe");
+	weapon.setType(Weapon.Type.SLASHING);
+	weapon.setMinDamage(20);
+	weapon.setMaxDamage(30);
+	weapon.setChanceOfCritical(0.4);
+	weapon.setCriticalModifier(2);
+	return weapon;
     }
 
     public static void main(String[] args) {
@@ -118,7 +124,6 @@ public class App implements KeyListener {
 	if (direction != null && !directionsPressed.contains(direction)) {
 	    directionsPressed.push(direction);
 	}
-	System.out.println(keyCode);
     }
 
     @Override
@@ -141,7 +146,6 @@ public class App implements KeyListener {
 	    directionsPressed.remove(direction);
 	}
 
-	System.err.println(keyCode);
     }
 
     @Override

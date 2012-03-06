@@ -18,7 +18,8 @@ public class AStarShortestPathFinder implements PathFinder {
     private PathStep currentLowestCostPathStep;
     private LinkedList<PathStep> open;
     private LinkedList<PathStep> closed;
-
+    private static final PathStep NO_PARENT = null; 
+    
     public AStarShortestPathFinder(LevelMap levelMap, Movable movable) {
 	this.levelMap = levelMap;
 	this.movable = movable;
@@ -31,7 +32,7 @@ public class AStarShortestPathFinder implements PathFinder {
 	closed.clear();
 	Tile startTile = levelMap.getTile(movable.getCoordinates());
 	destinationTile = levelMap.getTile(destinationCoordinates);
-	open.add(new PathStep(startTile, null));
+	open.add(new PathStep(startTile, NO_PARENT));
 	boolean pathFound = false;
 	while (!pathFound) {
 	    if (open.size() == 0) {
@@ -40,31 +41,29 @@ public class AStarShortestPathFinder implements PathFinder {
 	    currentLowestCostPathStep = open.pollFirst();
 	    closed.add(currentLowestCostPathStep);
 	    for (Tile tile : tileUtils.getAdjacentTiles(currentLowestCostPathStep.tile(), Tile.Type.FLOOR)) {
-		treatAdjacentTile(tile);
+		considerAdjacentTile(tile);
 	    }
 	    pathFound = currentLowestCostPathStep.tile().equals(destinationTile);
 	}
 	return extractShortestPath();
     }
 
-    private void treatAdjacentTile(Tile adjacentTile) {
+    private void considerAdjacentTile(Tile adjacentTile) {
 	PathStep adjacentPathStep = new PathStep(adjacentTile, currentLowestCostPathStep);
 	if (closed.contains(adjacentPathStep)) {
 	    return;
 	}
-	if (open.contains(adjacentPathStep)) {
-	    decideIfShortestPathShouldBeChanged(adjacentPathStep);
+	if (open.contains(adjacentPathStep) && adjacentPathStep.getG() < currentLowestCostPathStep.getG()) {
+	    changeShortestPath(adjacentPathStep);
 	}
 	else {
 	    open.add(adjacentPathStep);
 	}
     }
 
-    private void decideIfShortestPathShouldBeChanged(PathStep adjacentPathStep) {
-	if (adjacentPathStep.getG() < currentLowestCostPathStep.getG()) {
+    private void changeShortestPath(PathStep adjacentPathStep) {
 	    adjacentPathStep.changeParentTo(currentLowestCostPathStep);
 	    reSortConsideringPathSteps(adjacentPathStep);
-	}
     }
 
     private void reSortConsideringPathSteps(PathStep newPathStep) {

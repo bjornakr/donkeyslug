@@ -15,14 +15,14 @@ public class AttackableFighterCreature extends Creature implements Attackable, F
     private Weapon weapon;
     private List<AttackListener> attackListeners = new LinkedList<AttackListener>();
     private HashMap<Armor.Type, Armor> equippedArmor = new HashMap<Armor.Type, Armor>();
-    
+
     public AttackableFighterCreature(String name, CreatureStatistics creatureStats) {
 	super(name, creatureStats);
 	this.name = name;
 	myStats = creatureStats;
 	weapon = new Weapon("Bare hands");
-//	weapon.setName("Bare hands");
-	weapon.setChanceOfCritical(0.1);
+	// weapon.setName("Bare hands");
+	weapon.setChanceOfCritical(0.05);
 	weapon.setCriticalModifier(2);
 	weapon.setType(Weapon.Type.BLUNT);
 	weapon.setMinDamage(4);
@@ -31,24 +31,9 @@ public class AttackableFighterCreature extends Creature implements Attackable, F
 
     @Override
     public void attack(Attackable opponent) {
-	notifyAttackToReporter(opponent);
-	BattleCalculator battleCalculator = new BattleCalculator(this, opponent);
-	if (battleCalculator.attackerHitsOpponent()) {
-	    opponent.takeDamage(battleCalculator.determineDamage());
-	}
-	else {
-	    notifyMissToReporter();
-	}
-	notifyAttackListeners(null);
-    }
-
-    private void notifyMissToReporter() {
-	GameReporter.getInstance().offer(name + " misses.");
-    }
-
-    private void notifyAttackToReporter(Attackable opponent) {
-	GameReporter.getInstance().offer(name + " attacks " + opponent.getName() +
-		" with " + weapon.name().toLowerCase() + ".");
+	BattleExecutor battleExecutor = new BattleExecutor(this, opponent);
+	battleExecutor.executeAttack();
+	notifyAttackListeners(battleExecutor.attackReport());
     }
 
     @Override
@@ -68,7 +53,7 @@ public class AttackableFighterCreature extends Creature implements Attackable, F
     public void equipArmor(Armor armorItem) {
 	equippedArmor.put(armorItem.type(), armorItem);
     }
-    
+
     @Override
     public int accumulativeDefensiveValueOfArmor() {
 	int accumulatedDefensiveValueOfArmor = 0;
@@ -105,5 +90,10 @@ public class AttackableFighterCreature extends Creature implements Attackable, F
 	    consume((Consumable) item);
 	    System.out.println("Quaffed something");
 	}
+	else if (item instanceof Armor) {
+	    equipArmor((Armor) item);
+	    System.out.println("Armor equipped");
+	}
+
     }
 }

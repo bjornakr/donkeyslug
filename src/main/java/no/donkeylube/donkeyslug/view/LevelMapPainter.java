@@ -14,6 +14,10 @@ import no.donkeylube.donkeyslug.Coordinates;
 import no.donkeylube.donkeyslug.Movable;
 import no.donkeylube.donkeyslug.Player;
 import no.donkeylube.donkeyslug.Tile;
+import no.donkeylube.donkeyslug.items.Armor;
+import no.donkeylube.donkeyslug.items.Consumable;
+import no.donkeylube.donkeyslug.items.Item;
+import no.donkeylube.donkeyslug.items.Weapon;
 
 public class LevelMapPainter extends JPanel implements AttackListener {
     private static final long serialVersionUID = 1L;
@@ -63,6 +67,22 @@ public class LevelMapPainter extends JPanel implements AttackListener {
 		if (tile.getItems().size() > 0) {
 		    g2.setColor(Color.ORANGE);
 		    g2.fillRect(brushPosX + sizeRedux, brushPosY + sizeRedux, BLOCKSIZE - sizeRedux*2, BLOCKSIZE - sizeRedux*2);
+		    Item item = tile.getItems().get(0);
+		    if (item instanceof Weapon) {
+			sizeRedux += 3;
+			g2.setColor(Color.GRAY);
+			g2.fillRect(brushPosX + sizeRedux, brushPosY + sizeRedux, BLOCKSIZE - sizeRedux*2, BLOCKSIZE - sizeRedux*2);
+		    }
+		    if (item instanceof Consumable) {
+			sizeRedux += 3;
+			g2.setColor(Color.RED);
+			g2.fillRect(brushPosX + sizeRedux, brushPosY + sizeRedux, BLOCKSIZE - sizeRedux*2, BLOCKSIZE - sizeRedux*2);
+		    }
+		    if (item instanceof Armor) {
+			sizeRedux += 3;
+			g2.setColor(Color.WHITE);
+			g2.fillRect(brushPosX + sizeRedux, brushPosY + sizeRedux, BLOCKSIZE - sizeRedux*2, BLOCKSIZE - sizeRedux*2);
+		    }
 		}
 		else if (tile.getAttackable() != null && !(tile.getAttackable() instanceof Player)) {
 		    if (tile.getAttackable().isDead()) {
